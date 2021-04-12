@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ContactSeeder::class);
         $this->call(JobstatusSeedder::class);
         $this->call(ShipperSeeder::class);
-        $this->call(RateSeeder::class);
+        //$this->call(RateSeeder::class);
         $this->call(OptionSeeder::class);
     }
 }
