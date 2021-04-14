@@ -13,7 +13,6 @@
         <Category />
       </div>
     </div>
-
     <Footer />
   </div>
 </template>

@@ -1,12 +1,17 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col" v-for="category in categories" :key="category.id">
-        <div @click="start(category.categories)">
-          <md-card v-if="category.categories != ''" :value="category.categories">
+      <div class="col" v-for="service in services" :key="service.id">
+        <div @click="start(service.services)">
+          <md-card v-if="service.services != ''" :value="service.services">
             <md-card-content>
-              <md-icon>{{ category.icon }}</md-icon>
-              {{ category.categories }}
+              <div>
+                <img :src="'images/uploads/' + service.icon" alt="" width="60" />
+              </div>
+              <div class="break"></div>
+              <div>
+                {{ service.name }}
+              </div>
             </md-card-content>
           </md-card>
         </div>
@@ -20,21 +25,21 @@ import localData from "../services/localData";
 export default {
   name: "Origin",
   data: () => ({
-    categories: null,
+    services: null,
   }),
 
   methods: {
-    start(category) {
-      localData.save("category", category);
+    start(service) {
+      localData.save("service", service);
       this.$router.push("/order/job-location");
     },
 
-    getcategories() {
+    get() {
       axios
-        .get("categories")
+        .get("steps-services")
         .then((res) => {
-          console.log("xxxxxxxxxx", res.data);
-          this.categories = res.data;
+          console.log("services :", res.data);
+          this.services = res.data;
         })
         .catch((err) => {
           console.log("Error: ", err);
@@ -42,7 +47,7 @@ export default {
     },
   },
   created() {
-    this.getcategories();
+    this.get();
     localData.save("cr", this.$router.currentRoute.path);
   },
   components: {},

@@ -4,6 +4,16 @@
       <md-list-item to="/admin" @click="hideMenu()">
         <span class="md-list-item-text">Dashboard</span>
       </md-list-item>
+      <md-list-item to="/admin/services" @click="hideMenu()">
+        <span class="md-list-item-text">Services</span>
+      </md-list-item>
+      <md-list-item to="/admin/steps" @click="hideMenu()">
+        <span class="md-list-item-text">Steps</span>
+      </md-list-item>
+
+      <md-list-item to="/admin/options" @click="hideMenu()">
+        <span class="md-list-item-text">Options</span>
+      </md-list-item>
 
       <md-list-item md-expand :md-expanded.sync="expandLookups">
         <span class="md-list-item-text">Lookups</span>

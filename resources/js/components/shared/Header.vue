@@ -8,7 +8,7 @@
       >
         <md-icon>menu</md-icon>
       </md-button>
-      <h3 @click="$router.push('/')"><span>Jawadi</span></h3>
+      <h3 @click="$router.push('/')"><span>aTradies</span></h3>
     </div>
   </div>
 </template>

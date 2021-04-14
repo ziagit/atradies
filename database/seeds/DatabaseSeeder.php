@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
         $this->call(JobstatusSeedder::class);
         $this->call(ShipperSeeder::class);
         //$this->call(RateSeeder::class);
+        $this->call(TypeSeeder::class);
+        $this->call(ServiceSeeder::class);
+        $this->call(StepSeeder::class);
         $this->call(OptionSeeder::class);
     }
 }

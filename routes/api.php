@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::resource("services", "Jobs\ServiceController");
+Route::resource("types", "Jobs\TypeController");
+Route::resource("steps", "Jobs\StepController");
+Route::get("steps-services", "Jobs\StepController@services");
+Route::resource("options", "Jobs\OptionController");
+Route::get("options-steps", "Jobs\OptionController@steps");
+
 Route::post('forgot-password', 'Auth\ResetPasswordController@forgot');
 Route::post('reset-password', 'Auth\ResetPasswordController@reset');
 Route::get("unauthorized", function () {
@@ -133,12 +140,9 @@ Route::resource('review', 'Carrier\ReviewController');
 Route::get("stripe-key", function(){
   return env("STRIPE_KEY");
 });
-Route::get("times", "OptionsController@times");
-Route::get("services", "OptionsController@services");
-Route::get("needs", "OptionsController@needs");
-Route::get("budgets", "OptionsController@budgets");
-Route::get("status", "OptionsController@status");
-Route::get("categories", "OptionsController@categories");
+
+
+
 
 
 

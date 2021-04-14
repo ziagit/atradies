@@ -77,6 +77,10 @@ import Addresses from './components/backend/lookups/addresses/Addresses'
 import Accessories from './components/backend/lookups/accessories/Accessories'
 import RateRanges from './components/backend/lookups/rate-ranges/RateRanges'
 
+import AdminServices from './components/backend/services/Services'
+import AdminSteps from './components/backend/services/steps/Steps'
+import AdminOptions from './components/backend/services/steps/options/Options'
+
 import CarrierList from './components/backend/carrier/CarrierList'
 import CustomerAddress from './components/backend/address/CustomerAddress'
 import CarrierAccessories from './components/backend/carrier/accessories/CarrierAccessories'
@@ -278,6 +282,10 @@ export default new VueRouter({
                         { name: 'addresses', path: 'addresses', component: Addresses },
                         { name: 'accessories', path: 'accessories', component: Accessories },
                         { name: 'range', path: 'rate-ranges', component: RateRanges },
+
+                        { name: 'services', path: 'services', component: AdminServices },
+                        { name: 'steps', path: 'steps', component: AdminSteps },
+                        { name: 'options', path: 'options', component: AdminOptions },
 
                         { name: 'carriers', path: 'carriers', component: CarrierList },
                         { name: 'rates', path: 'rates', component: Rates },

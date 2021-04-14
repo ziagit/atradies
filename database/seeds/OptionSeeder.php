@@ -15,76 +15,14 @@ class OptionSeeder extends Seeder
         Option::truncate();
         $options = [
             [
-                'times' => 'Emergency',
-                'services' => 'New installation',
-                'needs' => 'Benchtop',
-                'budgets' => 'Under $500',
-                'status' => 'Ready to hire',
-                'categories' => 'Plumbers',
-                'icon' => 'home',
+                'title' => 'Emergency',
+                'step_id' => 1,
+             
             ],
             [
-                'times' => 'ASAP',
-                'services' => 'Repair existing',
-                'needs' => 'Flooring',
-                'budgets' => '$500 - $2,000',
-                'status' => 'Planning $ budgeting',
-                'categories' => 'Cleaners',
-                'icon' => 'home',
-            ],
-            [
-                'times' => 'Next few days',
-                'services' => 'Replace existing',
-                'needs' => 'Other',
-                'budgets' => '$2,000 - $5,000',
-                'status' => '',
-                'categories' => 'Builders',
-                'icon' => 'home',
-            ],
-            [
-                'times' => 'I am flexible',
-                'services' => 'Other',
-                'needs' => '',
-                'budgets' => 'More than $5,000',
-                'status' => '',
-                'categories' => 'Painters',
-                'icon' => 'home',
-            ],
-            [
-                'times' => 'Next few weeks',
-                'services' => '',
-                'needs' => '',
-                'budgets' => 'Not sure',
-                'status' => '',
-                'categories' => 'Handyman',
-                'icon' => 'home',
-            ],
-            [
-                'times' => '',
-                'services' => '',
-                'needs' => '',
-                'budgets' => '',
-                'status' => '',
-                'categories' => 'Lighting',
-                'icon' => 'home',
-            ],
-            [
-                'times' => '',
-                'services' => '',
-                'needs' => '',
-                'budgets' => '',
-                'status' => '',
-                'categories' => 'Guardners',
-                'icon' => 'home',
-            ],
-            [
-                'times' => '',
-                'services' => '',
-                'needs' => '',
-                'budgets' => '',
-                'status' => '',
-                'categories' => 'Electricians',
-                'icon' => 'home',
+                'title' => 'ASAP',
+                'step_id' => 1,
+             
             ]
      
         ];
