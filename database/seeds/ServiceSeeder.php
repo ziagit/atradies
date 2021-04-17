@@ -16,15 +16,13 @@ class ServiceSeeder extends Seeder
         $options = [
             [
                 'name' => 'Cleanning',
-                'icon' => 'home',
+                'icon' => '1618318023',
                 'type_id'=>1
-             
             ],
             [
                 'name' => 'Painting',
-                'icon' => 'home',
+                'icon' => '1618318023',
                 'type_id'=>1
-             
             ]
      
         ];

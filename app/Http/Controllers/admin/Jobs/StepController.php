@@ -40,6 +40,7 @@ class StepController extends Controller
     {
         $step = New Step();
         $step->title = $request->title;
+        $step->route=$request->route;
         $step->service_id=$request->service;
         $step->save();
         return response()->json(['message'=>'Saved Successfully!'],200);
@@ -78,6 +79,7 @@ class StepController extends Controller
     {
         $step = Step::find($id);
         $step->title = $request->title;
+        $step->route = $request->route;
         $step->service_id=$request->service;
         $step->update();
         return response()->json(['message'=>'Updated Successfully!'],200);

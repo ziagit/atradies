@@ -1,5 +1,6 @@
 <template>
   <div class="confirmation">
+    <Header v-on:togal-menu="$emit('togal-menu')" />
     <div class="content">
       <div class="header">
         <span class="md-display-1">Confirmation</span>
@@ -29,11 +30,11 @@
           <div>
             <div class="item-head"><b>Other informations</b></div>
             <div class="item">
-              <div class="md-body-1">When should start: {{ job.time }}</div>
-              <div class="md-body-1">Type of service: {{ job.service }}</div>
+              <div class="md-body-1">When should start: {{ job.time.title }}</div>
+              <div class="md-body-1">Type of service: {{ job.service.name }}</div>
               <div class="md-body-1">What needs work: {{ job.need }}</div>
               <div class="md-body-1">Job status: {{ job.status }}</div>
-              <div class="md-body-1">What is budget: {{ job.budget }}</div>
+              <div class="md-body-1">What is budget: {{ job.budget.title }}</div>
             </div>
           </div>
 
@@ -76,6 +77,7 @@
         </md-card-content>
       </md-card>
     </div>
+    <Footer />
     <Snackbar :data="snackbar" />
   </div>
 </template>

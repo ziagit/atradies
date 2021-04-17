@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::resource("services", "Jobs\ServiceController");
-Route::resource("types", "Jobs\TypeController");
-Route::resource("steps", "Jobs\StepController");
-Route::get("steps-services", "Jobs\StepController@services");
-Route::resource("options", "Jobs\OptionController");
-Route::get("options-steps", "Jobs\OptionController@steps");
+Route::resource("services", "admin\Jobs\ServiceController");
+Route::resource("types", "admin\Jobs\TypeController");
+Route::resource("steps", "admin\Jobs\StepController");
+Route::get("steps-services", "admin\Jobs\StepController@services");
+Route::resource("options", "admin\Jobs\OptionController");
+Route::get("options-steps", "admin\Jobs\OptionController@steps");
 
 Route::post('forgot-password', 'Auth\ResetPasswordController@forgot');
 Route::post('reset-password', 'Auth\ResetPasswordController@reset');
@@ -112,12 +112,13 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 Route::group(['namespace' => 'Order'], function () {
+  
   Route::post('charge', 'CheckoutController@store');
   Route::get('payment-status/{orderId}', 'CheckoutController@checkPayment');
   Route::get("check-payment/{id}", 'CheckoutController@checkPayment');
 
-  Route::get('location-type', 'OrderController@locationType');
-  Route::get('pick-services', 'OrderController@pickServices');
+  Route::get('get-services', 'OrderController@services');
+  Route::get('get-options/{id}', 'OrderController@options');
   Route::get('delivery-services', 'OrderController@deliveryServices');
   Route::get('pick-date', 'OrderController@pickDate');
   Route::get('item-type', 'OrderController@itemType');

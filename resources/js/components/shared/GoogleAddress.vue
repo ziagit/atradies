@@ -2,7 +2,7 @@
   <div class="container">
     <md-field>
       <label>Postal code</label>
-      <md-input v-model="address" required ref="focusable" id="autocomplete"></md-input>
+      <md-input v-model="address" ref="focusable" id="autocomplete"></md-input>
     </md-field>
   </div>
 </template>

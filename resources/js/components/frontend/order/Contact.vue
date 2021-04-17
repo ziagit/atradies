@@ -1,6 +1,6 @@
 <template>
   <div class="additional-details">
-    <span class="md-display-1">Add your contact info</span>
+    <span class="md-display-1">{{ title }}</span>
     <form @submit.prevent="nextStep()">
       <md-field>
         <label>Name</label>
@@ -49,13 +49,13 @@ export default {
       phone: null,
       email: null,
     },
-    error: null,
+    title: null,
   }),
 
   methods: {
     nextStep() {
       localData.save("contact", this.form);
-      this.$router.push("/order/confirmation");
+      this.$router.push("/confirmation");
     },
     validator() {
       if (
@@ -71,6 +71,7 @@ export default {
       }
     },
     init() {
+      this.title = localData.read("service").steps[3].title;
       let data = localData.read("contact");
       if (data) {
         this.form.name = data.name;

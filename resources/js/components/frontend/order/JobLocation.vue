@@ -1,8 +1,8 @@
 <template>
   <div class="origin">
-    <span class="md-display-1">Where is the job?</span>
+    <span class="md-display-1">{{ title }}</span>
     <div class="break"></div>
-    <form @submit.prevent="nextStep()">
+    <form @submit.prevent="next()">
       <div class="search-container">
         <GoogleAddress
           v-on:google-valid-address="googleValidAddress"
@@ -12,15 +12,7 @@
       </div>
       <div class="break"></div>
       <div class="break"></div>
-      <div class="options">
-        <md-radio
-          v-for="service in accessoryList"
-          :key="service.id"
-          v-model="address.accessories[0]"
-          :value="service.code"
-          >{{ service.name }}</md-radio
-        >
-      </div>
+
       <div v-if="supportedArea">
         <div class="break"></div>
         <div class="break"></div>
@@ -48,13 +40,13 @@
 <script>
 import Snackbar from "../../shared/Snackbar";
 import GoogleAddress from "../../shared/GoogleAddress";
-import storage from "../services/storage";
+import localData from "../services/localData";
 export default {
   name: "Origin",
   data: () => ({
     supportedArea: null,
     initialData: null,
-    accessoryList: null,
+    title: null,
     address: {
       country: null,
       state: null,
@@ -72,7 +64,7 @@ export default {
   }),
 
   methods: {
-    async nextStep() {
+    async next() {
       if (
         this.address.country === "" ||
         this.address.state === "" ||
@@ -83,8 +75,8 @@ export default {
         this.snackbar.message = "Please provide a valid address!";
         this.snackbar.statusCode = 404;
       } else {
-        await storage.save("address", this.address);
-        this.$router.push("pickup-services");
+        await localData.save("address", this.address);
+        this.$router.push("date");
       }
     },
     googleValidAddress(address) {
@@ -95,7 +87,6 @@ export default {
       this.address.zip = address.zip;
       this.address.street = address.street;
       this.address.street_number = address.street_number;
-      console.log("valid add", address);
     },
     googleInvalidAddress(address) {
       this.supportedArea = address.state;
@@ -105,11 +96,10 @@ export default {
       this.address.zip = null;
       this.address.street = null;
       this.address.street_number = null;
-
-      console.log("invalid add", address);
     },
     async init() {
-      let data = await storage.read("address");
+      this.title = await localData.read("service").steps[0].title;
+      let data = await localData.read("address");
       if (data != null) {
         this.address.country = data.country;
         this.address.state = data.state;
@@ -118,26 +108,14 @@ export default {
         this.address.street = data.street;
         this.address.street_number = data.street_number;
         this.address.address = data.address;
-        this.address.accessories = data.accessories;
         this.address.appointmentTime = data.appointmentTime;
       }
-    },
-    getAccessories() {
-      axios
-        .get("location-type")
-        .then((res) => {
-          this.accessoryList = res.data;
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        });
     },
   },
   created() {
     this.$emit("progress", 0);
     this.init();
-    this.getAccessories();
-    storage.save("cRoute", this.$router.currentRoute.path);
+    localData.save("cRoute", this.$router.currentRoute.path);
   },
   components: {
     Snackbar,

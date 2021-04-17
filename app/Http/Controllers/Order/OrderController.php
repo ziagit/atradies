@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
-use App\order;
+use App\Service;
 use App\Option;
 use App\Itemtype;
 use Illuminate\Http\Request;
@@ -85,15 +85,16 @@ class OrderController extends Controller
         //
     }
 
-    public function locationType()
+    public function services()
     {
-        $services = Option::where('code', 'bs')->orWhere('code', 'rs')->orWhere('code', 'sp')->get();
+        $services = Service::with('steps')->get();
         return response()->json($services);
     }
-    public function pickServices()
+  
+    public function options($id)
     {
-        $services = Accessory::where('code', 'tl')->orWhere('code', 'in')->get();
-        return response()->json($services);
+        $options = Option::where('step_id',$id)->get();
+        return response()->json($options);
     }
     public function deliveryServices()
     {

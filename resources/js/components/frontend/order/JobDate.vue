@@ -1,29 +1,16 @@
 <template>
-  <div class="pickup-date">
-    <span class="md-display-1">When you need this worker?</span>
+  <div class="order">
+    <span class="md-display-1">{{ title }}</span>
     <div class="break"></div>
-    <div class="break"></div>
-    <form @submit.prevent="nextStep()">
-      <div>
-        <md-field>
-          <input type="date" v-model="selectedDate" required :min="validDate" />
-        </md-field>
-      </div>
+    <form @submit.prevent="next()">
       <div class="options">
-        <md-checkbox
-          v-for="accessory in accessories"
-          :key="accessory.id"
-          v-model="appointment"
-          :value="accessory.code"
-          >{{ accessory.name }}?</md-checkbox
+        <md-radio
+          v-for="option in options"
+          :key="option.id"
+          v-model="selected"
+          :value="option"
+          >{{ option.title }}?</md-radio
         >
-        <md-field v-if="appointment">
-          <md-input
-            type="time"
-            v-model="appointmentTime"
-            :required="appointment"
-          ></md-input>
-        </md-field>
       </div>
       <div class="break"></div>
       <div class="break"></div>
@@ -40,90 +27,42 @@
 </template>
 
 <script>
-import functions from "../services/functions";
+import localData from "../services/localData";
 export default {
   name: "PickupDate",
   data: () => ({
-    selectedDate: null,
-    accessories: null,
-    appointment: null,
-    appointmentTime: null,
-    boxChecked: false,
-    validDate: functions.validDate(),
+    title: null,
+    time: null,
+    options: null,
+    selected: null,
   }),
-
   methods: {
-    nextStep() {
-      if (this.selectedDate != null) {
-        let storage = JSON.parse(localStorage.getItem("order"));
-        storage.pickDate = this.selectedDate;
-        if (this.appointment != null) {
-          if (!storage.src.accessories.includes("ap")) {
-            storage.src.accessories.push(this.appointment);
-          }
-          storage.src.appointmentTime = this.appointmentTime;
-        } else {
-          if (storage.src.accessories.includes("ap")) {
-            for (let i = 0; i < storage.src.accessories.length; i++) {
-              if (storage.src.accessories[i] === "ap") {
-                storage.src.accessories.splice(i, 1);
-              }
-            }
-          }
-          storage.src.appointmentTime = null;
-        }
-
-        storage.save("date", this.selectedDate);
-        this.$router.push("additional-details");
-      }
+    next() {
+      localData.save("time", this.selected);
+      this.$router.push("/order/budget");
     },
-
-    init() {
-      let data = storage.read("date");
-      if (data != null) {
-        this.selectedDate = date;
-        if (storage.src.accessories.includes("ap")) {
-          this.appointment = "ap";
-          this.appointmentTime = storage.src.appointmentTime;
-        }
-      }
-    },
-    getAccessories() {
+    async init() {},
+    get() {
       axios
-        .get("pick-date")
+        .get("get-options/" + 2)
         .then((res) => {
-          this.accessories = res.data;
+          this.options = res.data;
+          this.selected = this.options[0];
         })
         .catch((err) => {
           console.log("Error: ", err);
         });
     },
+    async init() {
+      this.title = await localData.read("service").steps[1].title;
+      this.time = await localData.read("time");
+    },
   },
   created() {
-    this.$emit("progress", 2);
     this.init();
-    this.getAccessories();
-    storage.save("cRoute", this.$router.currentRoute.path);
+    this.$emit("progress", 2);
+    this.get();
+    localData.save("cRoute", this.$router.currentRoute.path);
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.pickup-date {
-  text-align: center;
-  input {
-    width: 100%;
-    background: #f0f2f5;
-    border: none;
-    font-family: "Roboto";
-    font-size: 16px;
-  }
-
-  input:focus {
-    outline: none;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-}
-</style>

@@ -2,17 +2,16 @@
   <div class="container">
     <div class="row">
       <div class="col" v-for="service in services" :key="service.id">
-        <div @click="start(service.services)">
-          <md-card v-if="service.services != ''" :value="service.services">
-            <md-card-content>
-              <div>
-                <img :src="'images/uploads/' + service.icon" alt="" width="60" />
-              </div>
-              <div class="break"></div>
-              <div>
-                {{ service.name }}
-              </div>
-            </md-card-content>
+        <div @click="start(service)">
+          <md-card>
+            <div class="image">
+              <img :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
+            </div>
+            <div class="break"></div>
+            <div class="text">
+              <div class="md-display-1">{{ service.name }}</div>
+              <div class="md-body-1">Some details about this service</div>
+            </div>
           </md-card>
         </div>
       </div>
@@ -21,7 +20,9 @@
 </template>
 
 <script>
+import VueRouter from "vue-router";
 import localData from "../services/localData";
+import JobLocation from "./JobLocation";
 export default {
   name: "Origin",
   data: () => ({
@@ -31,14 +32,13 @@ export default {
   methods: {
     start(service) {
       localData.save("service", service);
-      this.$router.push("/order/job-location");
+      this.$router.push("/order/location");
     },
 
     get() {
       axios
-        .get("steps-services")
+        .get("get-services")
         .then((res) => {
-          console.log("services :", res.data);
           this.services = res.data;
         })
         .catch((err) => {
@@ -47,10 +47,16 @@ export default {
     },
   },
   created() {
+    let routeData = new VueRouter({
+      routes: [{ path: "/order/location", component: JobLocation }],
+    });
+
     this.get();
     localData.save("cr", this.$router.currentRoute.path);
   },
-  components: {},
+  components: {
+    JobLocation,
+  },
 };
 </script>
 
@@ -64,16 +70,28 @@ export default {
     .col {
       flex: 50%;
       .md-card {
-        background: linear-gradient(45deg, transparent, #71c4ff29);
+        background: #383b3e;
         margin: 10px;
-        .md-card-content:last-of-type {
-          padding-bottom: none;
-        }
-
-        .md-card-content {
+        font-size: 18px;
+        line-height: 37px;
+        display: flex;
+        .image {
+          align-items: center;
+          display: flex;
           padding: 16px;
-          font-size: 18px;
-          line-height: 37px;
+          background: rgb(14, 126, 179);
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+        }
+        .text {
+          padding: 16px;
+          text-align: left;
+          .md-display-1 {
+            color: #fff;
+          }
+          .md-body-1 {
+            color: rgb(230, 224, 224);
+          }
         }
         .md-icon {
           position: absolute;

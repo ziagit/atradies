@@ -1,104 +1,68 @@
 <template>
-  <div class="budget">
-    <span class="md-display-1">How mouch is the budget?</span>
-    <form @submit.prevent="nextStep()">
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="options" v-for="(budget, index) in budgets" :key="index">
+  <div class="order">
+    <span class="md-display-1">{{ title }}</span>
+    <div class="break"></div>
+    <form @submit.prevent="next()">
+      <div class="options">
         <md-radio
-          v-if="budget.budgets != ''"
-          class="md-primary"
+          v-for="option in options"
+          :key="option.id"
           v-model="selected"
-          :value="budget.budgets"
-          >{{ budget.budgets }}</md-radio
+          :value="option"
+          >{{ option.title }}?</md-radio
         >
       </div>
-
       <div class="break"></div>
       <div class="break"></div>
       <div class="action">
-        <md-button to="/order/need" class="md-icon-button md-raised">
+        <md-button class="md-raised md-icon-button" @click="$router.back()">
           <md-icon>arrow_left</md-icon>
         </md-button>
-        <div class="tab"></div>
-        <md-button class="md-icon-button md-raised md-primary" type="submit">
+        <md-button class="md-primary md-raised md-icon-button" type="submit">
           <md-icon>arrow_right</md-icon>
         </md-button>
       </div>
     </form>
-
-    <Snackbar :data="snackbar" />
   </div>
 </template>
 
 <script>
-import Snackbar from "../../shared/Snackbar";
 import localData from "../services/localData";
 export default {
-  name: "Origin",
+  name: "PickupDate",
   data: () => ({
+    title: null,
+    budget: null,
     selected: null,
-    budgets: null,
-
-    snackbar: {
-      show: false,
-      message: null,
-      statusCode: null,
-    },
+    options: null,
   }),
-
   methods: {
-    async nextStep() {
-      await localData.save("budget", this.selected);
-      this.$router.push("/order/status");
+    next() {
+      localData.save("budget", this.selected);
+      this.$router.push("/order/contact");
     },
-
-    async init() {
-      this.selected = await localData.read("job-budgets");
-    },
-    getbudgets() {
+    get() {
       axios
-        .get("budgets")
+        .get("get-options/" + 3)
         .then((res) => {
-          this.budgets = res.data;
-          this.selected = res.data[0].budgets;
+          console.log("xxx", res.data);
+          this.options = res.data;
+          this.selected = this.options[0];
         })
         .catch((err) => {
           console.log("Error: ", err);
         });
     },
+    async init() {
+      this.title = await localData.read("service").steps[2].title;
+      this.budget = await localData.read("budget");
+    },
   },
   created() {
-    this.$emit("progress", 5);
     this.init();
-    this.getbudgets();
+    this.$emit("progress", 2);
+    this.get();
     localData.save("cRoute", this.$router.currentRoute.path);
-  },
-  components: {
-    Snackbar,
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.budget {
-  text-align: center;
-  form {
-    text-align: left;
-    width: 300px;
-    margin: auto;
-    .options {
-      .md-radio {
-        margin: 8px 16px 8px 0;
-      }
-    }
-    .action {
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
-
-@media only screen and (max-width: 600px) {
-}
-</style>

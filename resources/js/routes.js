@@ -44,7 +44,7 @@ import CarrierCard from './components/frontend/carrier/card-details/CarrierCard'
 
 import Order from './components/frontend/order/Order';
 import JobLocation from './components/frontend/order/JobLocation'
-import JobServices from './components/frontend/order/JobServices'
+import JobBudget from './components/frontend/order/Budget'
 import JobDate from './components/frontend/order/JobDate'
 import Carriers from './components/frontend/order/Carriers'
 import JobContact from './components/frontend/order/Contact'
@@ -163,9 +163,9 @@ export default new VueRouter({
                     component: Order,
                     children: [
                         { path: '', redirect: 'job-location' },
-                        { name: 'job-location', path: 'job-location', component: JobLocation, /* beforeEnter: orderGuard */ },
-                        { name: 'job-services', path: 'job-services', component: JobServices },
+                        { name: 'location', path: 'location', component: JobLocation, /* beforeEnter: orderGuard */ },
                         { name: 'date', path: 'date', component: JobDate },
+                        { name: 'budget', path: 'budget', component: JobBudget },
                         { name: 'contact', path: 'contact', component: JobContact },
                         { name: 'carriers', path: 'carriers', component: Carriers },
                         { name: 'payment-details', path: 'payment-details', component: PaymentDetails },

@@ -15,21 +15,25 @@ class StepSeeder extends Seeder
         Step::truncate();
         $options = [
             [
-                'title' => 'Budget',
+                'title' => 'Where is the job?',
                 'service_id' => 1,
-             
+                'route'=>'location'
             ],
             [
-                'title' => 'Time',
+                'title' => 'When the job should be started?',
                 'service_d' => 1,
-             
+                'route'=>'time'
             ],
             [
-                'title' => 'location',
+                'title' => 'Budget for cleaning',
                 'service_d' => 1,
-             
+                'route'=>'budget'
+            ],
+            [
+                'title' => 'Budget for service 2',
+                'service_d' => 2,
+                'route'=>'budget'
             ]
-     
         ];
         Step::insert($options);
     }

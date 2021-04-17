@@ -17,6 +17,7 @@ class CreateStepsTable extends Migration
             $table->id();
             $table->string('title');
             $table->unsignedInteger('service_id');
+            $table->string('route');
             $table->timestamps();
         });
     }

@@ -2,11 +2,13 @@
   <div class="container">
     <Header v-on:togal-menu="$emit('togal-menu')" />
     <div class="content">
-      <div class="md-display-1">Book a service in just a few steps</div>
-      <div class="md-subheading">We give value to our customers!</div>
+      <div class="md-display-1">
+        What service <span style="color: rgb(14, 126, 179)">do you need?</span>
+      </div>
       <div class="break"></div>
-      <div class="break"></div>
-      <div class="md-title">What service do you need?</div>
+      <!--  <div class="md-title">
+        What service <span style="color: rgb(14, 126, 179)">do you need?</span>
+      </div> -->
       <div class="break"></div>
       <div class="break"></div>
       <div class="actions">
@@ -53,11 +55,8 @@ export default {
     margin: auto;
     padding-top: 9%;
     .md-display-1 {
-      font-weight: 500;
-      font-size: 36px;
-    }
-    .md-subheading {
-      color: #448aff;
+      font-weight: 700;
+      font-size: 29px;
     }
     .actions {
       .md-button {

@@ -23,7 +23,6 @@
     <Footer />
   </div>
 </template>
-
 <script>
 import RadialProgressBar from "vue-radial-progress";
 import Header from "../../shared/Header";

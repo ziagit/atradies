@@ -4,8 +4,12 @@
       <md-card>
         <md-card-content>
           <md-field>
-            <label>title</label>
-            <md-input v-model="form.title" title="title"></md-input>
+            <label>Title</label>
+            <md-input v-model="form.title"></md-input>
+          </md-field>
+          <md-field>
+            <label>Route</label>
+            <md-input v-model="form.route"></md-input>
           </md-field>
           <md-field>
             <md-select v-model="form.service" id="service" placeholder="service">
@@ -37,6 +41,7 @@ export default {
     return {
       form: {
         title: null,
+        route: null,
         service: null,
       },
       services: null,

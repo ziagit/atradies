@@ -46,12 +46,14 @@
         <md-table-head md-numeric>ID</md-table-head>
         <md-table-head>Name</md-table-head>
         <md-table-head>Service</md-table-head>
+        <md-table-head>Route</md-table-head>
         <md-table-head>Actions</md-table-head>
       </md-table-row>
       <md-table-row v-for="step in steps.data" :key="step.id">
         <md-table-cell md-numeric>{{ step.id }}</md-table-cell>
         <md-table-cell>{{ step.title }}</md-table-cell>
         <md-table-cell>{{ step.service.name }}</md-table-cell>
+        <md-table-cell>{{ step.route }}</md-table-cell>
 
         <md-table-cell md-label="Actions">
           <md-button class="md-icon-button md-primary" @click="edit(step)">
