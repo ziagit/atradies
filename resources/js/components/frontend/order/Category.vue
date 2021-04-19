@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col" v-for="service in services" :key="service.id">
-        <div @click="start(service)">
+        <div @click="next(service)">
           <md-card>
             <div class="image">
               <img :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
@@ -23,6 +23,7 @@
 import VueRouter from "vue-router";
 import localData from "../services/localData";
 import JobLocation from "./JobLocation";
+import router from "../../../routes";
 export default {
   name: "Origin",
   data: () => ({
@@ -30,9 +31,8 @@ export default {
   }),
 
   methods: {
-    start(service) {
-      localData.save("service", service);
-      this.$router.push("/order/location");
+    async next(service) {
+      this.$router.push("/order/steps");
     },
 
     get() {
@@ -70,7 +70,6 @@ export default {
     .col {
       flex: 50%;
       .md-card {
-        background: #383b3e;
         margin: 10px;
         font-size: 18px;
         line-height: 37px;
@@ -87,10 +86,10 @@ export default {
           padding: 16px;
           text-align: left;
           .md-display-1 {
-            color: #fff;
+            color: #000;
           }
           .md-body-1 {
-            color: rgb(230, 224, 224);
+            //color: rgb(230, 224, 224);
           }
         }
         .md-icon {

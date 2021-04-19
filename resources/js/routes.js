@@ -42,8 +42,8 @@ import CarrierAccount from './components/frontend/carrier/account-details/Carrie
 import EditCarrierAccount from './components/frontend/carrier/account-details/EditCarrierAccount';
 import CarrierCard from './components/frontend/carrier/card-details/CarrierCard';
 
-import Order from './components/frontend/order/Order';
-import JobLocation from './components/frontend/order/JobLocation'
+import Order from './components/frontend/order/Order'
+import Steps from './components/frontend/order/Steps'
 import JobBudget from './components/frontend/order/Budget'
 import JobDate from './components/frontend/order/JobDate'
 import Carriers from './components/frontend/order/Carriers'
@@ -162,9 +162,9 @@ export default new VueRouter({
                     path: 'order',
                     component: Order,
                     children: [
-                        { path: '', redirect: 'job-location' },
-                        { name: 'location', path: 'location', component: JobLocation, /* beforeEnter: orderGuard */ },
-                        { name: 'date', path: 'date', component: JobDate },
+                        { path: '', redirect: 'step' },
+                        { name: 'steps', path: 'steps', component: Steps, /* beforeEnter: orderGuard */ },
+                        //{ name: 'date', path: 'date', component: JobDate },
                         { name: 'budget', path: 'budget', component: JobBudget },
                         { name: 'contact', path: 'contact', component: JobContact },
                         { name: 'carriers', path: 'carriers', component: Carriers },

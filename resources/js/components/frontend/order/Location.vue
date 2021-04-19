@@ -32,13 +32,6 @@
           </md-card-content>
         </md-card>
       </div>
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="action">
-        <md-button class="md-icon-button md-raised md-primary" type="submit">
-          <md-icon>arrow_right</md-icon>
-        </md-button>
-      </div>
     </form>
 
     <Snackbar :data="snackbar" />
