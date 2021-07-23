@@ -5,12 +5,13 @@
         <div @click="next(service)">
           <md-card>
             <div class="image">
-              <img :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
+              <img v-if="service.icon != ''" :src="'images/uploads/' + service.icon" alt="" width="60" />
+              <img v-else :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
             </div>
             <div class="break"></div>
             <div class="text">
               <div class="md-display-1">{{ service.name }}</div>
-              <div class="md-body-1">Some details about this service</div>
+              <div class="md-body-1">{{service.description}}</div>
             </div>
           </md-card>
         </div>
@@ -32,6 +33,7 @@ export default {
 
   methods: {
     async next(service) {
+      localData.save("service",service);
       this.$router.push("/order/steps");
     },
 

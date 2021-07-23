@@ -48,7 +48,7 @@
         <md-table-cell md-numeric>{{ index + 1 }}</md-table-cell>
         <md-table-cell
           ><img :src="'/images/uploads/' + carrier.logo" alt="Logo"
-        /></md-table-cell>
+        width="100px" /></md-table-cell>
         <md-table-cell>{{ carrier.first_name }}</md-table-cell>
         <md-table-cell>{{ carrier.last_name }}</md-table-cell>
         <md-table-cell>{{ carrier.website }}</md-table-cell>

@@ -42,34 +42,6 @@
         </md-list>
       </md-list-item>
 
-      <md-list-item md-expand :md-expanded.sync="expandCarriers">
-        <span class="md-list-item-text">Carriers</span>
-        <md-list slot="md-expand">
-          <md-list-item class="md-inset" to="/admin/carriers" @click="hideMenu()"
-            >Carriers</md-list-item
-          >
-          <md-list-item class="md-inset" to="/admin/rates" @click="hideMenu()"
-            >Rates</md-list-item
-          >
-          <md-list-item
-            class="md-inset"
-            to="/admin/carrier/accessories"
-            @click="hideMenu()"
-            >Accessories</md-list-item
-          >
-        </md-list>
-      </md-list-item>
-      <md-list-item md-expand :md-expanded.sync="expandShippers">
-        <span class="md-list-item-text">Shippers</span>
-        <md-list slot="md-expand">
-          <md-list-item class="md-inset" to="/admin/shippers" @click="hideMenu()"
-            >Shippers</md-list-item
-          >
-          <md-list-item class="md-inset" to="/admin/orders" @click="hideMenu()"
-            >Orders</md-list-item
-          >
-        </md-list>
-      </md-list-item>
 
       <md-list-item to="/admin/users" @click="hideMenu()">
         <span class="md-list-item-text">Users list</span>

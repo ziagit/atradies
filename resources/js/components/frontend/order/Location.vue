@@ -1,6 +1,6 @@
 <template>
   <div class="origin">
-    <span class="md-display-1">Where is the job?</span>
+    <span class="md-display-1">{{myLocation.title}}</span>
     <div class="break"></div>
     <form @submit.prevent="nextStep()">
       <div class="search-container">
@@ -44,10 +44,12 @@ import GoogleAddress from "../../shared/GoogleAddress";
 import localData from "../services/localData";
 export default {
   name: "Origin",
+  props:['location'],
   data: () => ({
     supportedArea: null,
     initialData: null,
     sizes: null,
+    myLocation:null,
     address: {
       country: null,
       state: null,
@@ -99,6 +101,7 @@ export default {
       this.address.street_number = null;
     },
     async init() {
+      this.myLocation = this.location;
       let data = await localData.read("address");
       if (data != null) {
         this.address.country = data.country;
@@ -112,16 +115,7 @@ export default {
         this.address.appointmentTime = data.appointmentTime;
       }
     },
-    getAccessories() {
-      axios
-        .get("location-type")
-        .then((res) => {
-          this.sizes = res.data;
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        });
-    },
+   
   },
   created() {
     this.$emit("progress", 0);

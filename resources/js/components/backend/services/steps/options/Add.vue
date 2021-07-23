@@ -3,18 +3,28 @@
     <form @submit.prevent="save()">
       <md-card>
         <md-card-content>
-          <md-field>
-            <label>title</label>
-            <md-input v-model="form.title" title="title"></md-input>
-          </md-field>
-          <md-field>
-            <md-select v-model="form.step" id="op" placeholder="Option">
-              <md-option v-for="step in steps" :key="step.id" :value="step.id">{{
-                step.title
-              }}</md-option>
-            </md-select>
-          </md-field>
+          <md-content class="md-layout">
+            <md-field>
+              <label>title</label>
+              <md-input v-model="form.title" title="title"></md-input>
+            </md-field>
+            <md-field>
+              <select @change="getOption" v-model="form.service" id="service" placeholder="Service" >
+                <option v-for="service in services" :key="service.id" :value="service.id">{{
+                  service.name
+                }}</option>
+              </select>
+            </md-field>
+            <md-field>
+              <md-select v-model="form.step" id="op" placeholder="Step">
+                <md-option v-for="step in steps" :key="step.id" :value="step.id">{{
+                  step.title
+                }}</md-option>
+              </md-select>
+            </md-field>
+          </md-content>
         </md-card-content>
+        
         <md-card-actions>
           <md-button type="submit" class="md-button md-raised"> Save </md-button>
         </md-card-actions>
@@ -34,8 +44,10 @@ export default {
       form: {
         title: null,
         step: null,
+        service:null
       },
       steps: null,
+      services:null,
       snackbar: {
         show: false,
         message: null,
@@ -48,7 +60,6 @@ export default {
       axios
         .post("options", this.form)
         .then((res) => {
-          console.log("saved successfully! ", res.data);
           this.$emit("close-dialog");
         })
         .catch((err) => {
@@ -60,15 +71,26 @@ export default {
     },
     get() {
       axios
-        .get("options-steps")
+      .get('get-services')
+      .then((response) => {
+        this.services = response.data;
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    getOption(){
+      // alert(this.form.service);
+      axios
+        .get("options-steps/"+this.form.service)
         .then((res) => {
-          console.log("steps: , ", res.data);
           this.steps = res.data;
         })
         .catch((err) => {
           console.log("Error: ", err);
         });
-    },
+    }
   },
   created() {
     this.get();

@@ -17,4 +17,8 @@ class Address extends Model
     public function orders(){
         return $this->hasOne(Order::class);
     }
+
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
 }

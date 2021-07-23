@@ -17,11 +17,13 @@ class OptionSeeder extends Seeder
             [
                 'title' => 'Emergency',
                 'step_id' => 1,
+                'service_id'   => 1,
              
             ],
             [
                 'title' => 'ASAP',
                 'step_id' => 1,
+                'service_id'   => 1,
              
             ]
      

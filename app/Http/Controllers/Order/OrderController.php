@@ -116,4 +116,14 @@ class OrderController extends Controller
         $types = Itemtype::all();
         return response()->json($types);
     }
+
+    /**
+     * get the options of specific step
+     * @param $step_id
+     */
+    public function stepOption($step_id)
+    {
+        $options = Option::where("step_id",$step_id)->get();
+        return response()->json($options);
+    }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="additional-details">
-    <span class="md-display-1">{{ title }}</span>
+    <span class="md-display-1">{{ myContact.title }}</span>
     <form @submit.prevent="nextStep()">
       <md-field>
         <label>Name</label>
@@ -24,15 +24,7 @@
         <label>Work descriptions</label>
         <md-textarea v-model="form.instructions"></md-textarea>
       </md-field>
-      <div class="action">
-        <md-button @click="$router.back()" class="md-icon-button md-raised">
-          <md-icon>arrow_left</md-icon>
-        </md-button>
-        <div class="tab"></div>
-        <md-button class="md-icon-button md-raised md-primary" type="submit">
-          <md-icon>arrow_right</md-icon>
-        </md-button>
-      </div>
+      
     </form>
   </div>
 </template>
@@ -42,6 +34,7 @@ import functions from "../services/functions";
 import localData from "../services/localData";
 export default {
   name: "Contact",
+  props:['contact'],
   data: () => ({
     form: {
       instructions: null,
@@ -49,7 +42,7 @@ export default {
       phone: null,
       email: null,
     },
-    title: null,
+    myContact: null,
   }),
 
   methods: {
@@ -71,7 +64,7 @@ export default {
       }
     },
     init() {
-      this.title = localData.read("service").steps[3].title;
+      this.myContact = this.contact;
       let data = localData.read("contact");
       if (data) {
         this.form.name = data.name;

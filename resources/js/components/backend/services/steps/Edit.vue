@@ -8,8 +8,13 @@
             <md-input v-model="form.title"></md-input>
           </md-field>
           <md-field>
-            <label>Route</label>
-            <md-input v-model="form.route"></md-input>
+            <md-select v-model="form.route" id="route" placeholder="Route name">
+              <md-option value="location">Location</md-option>
+              <md-option value="contact">Location</md-option>
+              <md-option value="multichoices">Multi choices</md-option>
+              <md-option value="onechoice">One choice</md-option>
+              <md-option value="description">Description</md-option>
+            </md-select>
           </md-field>
           <md-field>
             <md-select v-model="form.service" id="service" placeholder="service">
@@ -83,6 +88,7 @@ export default {
   created() {
     this.form.title = this.step.title;
     this.form.service = this.step.service.id;
+    this.form.route   = this.step.service.route;
     this.get();
   },
   components: {

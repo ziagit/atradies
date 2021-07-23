@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="save()">
-      <md-card>
+      <md-card >
         <md-card-content>
           <md-field>
             <label>Name</label>
@@ -13,6 +13,11 @@
                 type.title
               }}</md-option>
             </md-select>
+          </md-field>
+          <md-field>
+            <md-textarea v-model="form.description" id="description" placeholder="Description">
+             
+            </md-textarea>
           </md-field>
           <md-field>
             <md-tooltip>Select Icon</md-tooltip>
@@ -45,6 +50,7 @@ export default {
       form: {
         name: null,
         type: null,
+        description:null,
       },
       types: null,
       icon: null,
@@ -64,6 +70,7 @@ export default {
       fd.append("icon", this.icon);
       fd.append("name", this.form.name);
       fd.append("type", this.form.type);
+      fd.append('description',this.form.description);
       axios
         .post("services", fd)
         .then((res) => {

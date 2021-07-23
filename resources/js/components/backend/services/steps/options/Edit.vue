@@ -10,6 +10,13 @@
               <md-input v-model="form.title" placeholder="Title"></md-input>
             </md-field>
             <md-field>
+              <select @change="getOption" v-model="form.service" id="service" placeholder="Service" >
+                <option v-for="service in services" :key="service.id" :value="service.id">{{
+                  service.name
+                }}</option>
+              </select>
+            </md-field>
+            <md-field>
               <md-select v-model="form.step" placeholder="" id="step">
                 <md-option v-for="step in steps" :key="step.id" :value="step.id">{{
                   step.title
@@ -35,8 +42,10 @@ export default {
       form: {
         title: null,
         step: null,
+        service:null,
       },
       steps: null,
+      services:null,
     };
   },
   methods: {
@@ -53,7 +62,7 @@ export default {
     },
     get() {
       axios
-        .get("options-steps")
+        .get("options-steps/"+this.form.service)
         .then((res) => {
           console.log("options-steps: ", res.data);
           this.steps = res.data;
@@ -62,12 +71,36 @@ export default {
           console.log("Error: ", err);
         });
     },
+    getService(){
+      axios
+      .get('get-services')
+      .then((response) => {
+        this.services = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    getOption(){
+      // alert(this.form.service);
+      axios
+        .get("options-steps/"+this.form.service)
+        .then((res) => {
+          this.steps = res.data;
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+        });
+    }
   },
   created() {
     console.log("xxxxxxxxx", this.op);
-    this.get();
     this.form.title = this.op.title;
     this.form.step = this.op.step.id;
+    this.form.service  = this.op.service.id;
+    this.getService();
+    this.get();
+
   },
 };
 </script>

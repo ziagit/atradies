@@ -1,20 +1,28 @@
 <template>
-  <div class="steps">
+  <div class="steps md-card md-default">
     <ul>
       <div v-for="(step, index) in service.steps" :key="index">
         <li v-if="index == stepNumber">
-          <span v-if="step.route == 'location'"> <Location /> </span>
-          <span v-if="step.route == 'contact'"> <Contact /> </span>
+          <span v-if="step.route == 'location'" > <Location  :location="step" /> </span>
+          <span v-else-if="step.route == 'contact'" > <Contact :contact="step" /> </span>
+          <span v-else-if="step.route == 'multichoices'"><Multichoice :multichoice='step' /></span>
+          <span v-else-if="step.route == 'onechoice'"><Onechoice :onechoice='step' /></span>
+         
+         
           <span v-else><Step :step="step" /></span>
-          <div class="tab"></div>
+          
           <div class="action">
+             <md-button @click="$router.back()" class="md-raised">
+              Preview
+            </md-button>
             <md-button
               @click="next(index + 1)"
-              class="md-icon-button md-raised md-primary"
+              class="md-raised md-primary"
               type="submit"
             >
-              <md-icon>arrow_right</md-icon>
+              Continue
             </md-button>
+           
           </div>
         </li>
       </div>
@@ -25,6 +33,10 @@
 <script>
 import Location from "./Location";
 import Contact from "./Contact";
+import Multichoice from './Multichoice';
+import Description from './Description';
+import Onechoice from './Onechoice';
+
 import Step from "./Step";
 import localData from "../services/localData";
 export default {
@@ -37,9 +49,16 @@ export default {
     Location,
     Step,
     Contact,
+    Multichoice,
+    Onechoice,
+    Description,
   },
   methods: {
     async next(index) {
+      if(index == this.service.steps.length)
+      {
+       this.$router.push("/confirmation");
+      }
       if (index == this.service.steps.length) {
         console.log("you reached to last step", index);
       } else {
