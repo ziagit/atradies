@@ -10,10 +10,15 @@
           <md-field>
             <md-select v-model="form.route" placeholder="Route name">
               <md-option value="location">Location</md-option>
-              <md-option value="contact">Location</md-option>
-              <md-option value="multichoices">Multi choices</md-option>
-              <md-option value="onechoice">One choice</md-option>
+              <md-option value="locationtype">Location Type</md-option>
+              <md-option value="servicetype">Service Type</md-option>
+              <md-option value="budget">Budget</md-option>
+              <md-option value="time">Time</md-option>
+              <md-option value="status">Status</md-option>
+              <md-option value="need">Need</md-option>
               <md-option value="description">Description</md-option>
+              <md-option value="contact">Contact</md-option>
+
             </md-select>
           </md-field>
           <md-field>

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Carrier;
 use App\Http\Controllers\Controller;
-use App\Job;
+use App\UserJob;
 use App\Jobstatus;
 use App\Notifications\JobUpdated;
 use App\Notifications\UserJobUpdated;
+use App\Order;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,9 +25,13 @@ class JobController extends Controller
     public function index()
     {
         
-        $carrierId = User::with('carrier')->find(Auth::id())->carrier->id;
-        $jobs = Job::with('orderDetail', 'jobstatus')->where('carrier_id', $carrierId)->orderBy('id','DESC')->get();
-        return response()->json($jobs);
+        $userId = User::find(Auth::id())->id;
+        $orders = Order::select('orders.*','user_jobs.id as user_jobId')->join("user_jobs",'orders.id','user_jobs.order_id')
+        ->where("user_jobs.user_id",$userId)->orderBy("orders.id",'desc')
+        ->with('service')->with('addresses')->with("contacts")->with('user')
+
+        ->get();
+        return response()->json($orders);
     }
 
     /**
@@ -58,8 +63,14 @@ class JobController extends Controller
      */
     public function show($id)
     {
-        $jobs = Job::with('orderDetail', 'jobstatus')->find($id);
-        return $jobs;
+        $userId = User::find(Auth::id())->id;
+        $orders = Order::select('orders.*','orders.service as jobservice','user_jobs.id as user_jobId')->join("user_jobs",'orders.id','user_jobs.order_id')
+        ->where("user_jobs.user_id",$userId)
+        ->where("user_jobs.id",$id)->orderBy("orders.id",'desc')
+        ->with('service')->with('addresses')->with("contacts")->with('user')
+
+        ->first();
+        return response()->json($orders);
     }
 
     /**
@@ -82,7 +93,7 @@ class JobController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $job = Job::find($id);
+        $job = UserJob::find($id);
         $job->jobstatus_id = $request->status;
         $job->update();
         if ($request->emails[0] !== $request->emails[1]) {
@@ -103,7 +114,7 @@ class JobController extends Controller
 
     public function notifyUser($user, $id)
     {
-        $job = Job::with('orderDetail', 'jobstatus')->find($id);
+        $job = UserJob::with('orderDetail', 'jobstatus')->find($id);
 
         $user->notify(new UserJobUpdated($job));
         return $job;
@@ -111,7 +122,7 @@ class JobController extends Controller
 
     public function notifyShipper($emails, $id)
     {
-        $job = Job::with('orderDetail', 'jobstatus')->find($id);
+        $job = UserJob::with('orderDetail', 'jobstatus')->find($id);
 
         if ($emails[0] !== $emails[1]) {
             foreach ($emails as $email) {

@@ -72,4 +72,12 @@ class User extends Authenticatable implements JWTSubject
     public function shipperWithAddress(){
         return $this->shipper()->with('fullAddress');
     }
+
+    /** 
+    * The service that belong to the users.
+    */
+   public function service()
+   {
+       return $this->belongsToMany(Service::class)->withPivot('id','created_at','updated_at');
+   }
 }

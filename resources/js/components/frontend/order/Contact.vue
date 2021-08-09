@@ -48,7 +48,6 @@ export default {
   methods: {
     nextStep() {
       localData.save("contact", this.form);
-      this.$router.push("/confirmation");
     },
     validator() {
       if (

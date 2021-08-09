@@ -12,6 +12,7 @@
       <div class="break"></div>
       <div class="break"></div>
       <div class="actions">
+        
         <Category />
       </div>
     </div>
@@ -51,7 +52,7 @@ export default {
     text-align: center;
     height: calc(100vh);
     text-align: center;
-    max-width: 600px;
+    max-width: 1000px;
     margin: auto;
     padding-top: 9%;
     .md-display-1 {

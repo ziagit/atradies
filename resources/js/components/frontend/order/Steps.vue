@@ -1,22 +1,52 @@
 <template>
-  <div class="steps md-card md-default">
+<div>
+  
+  <div class="steps md-card md-default col-md-12">
+    
     <ul>
       <div v-for="(step, index) in service.steps" :key="index">
         <li v-if="index == stepNumber">
-          <span v-if="step.route == 'location'" > <Location  :location="step" /> </span>
-          <span v-else-if="step.route == 'contact'" > <Contact :contact="step" /> </span>
-          <span v-else-if="step.route == 'multichoices'"><Multichoice :multichoice='step' /></span>
-          <span v-else-if="step.route == 'onechoice'"><Onechoice :onechoice='step' /></span>
          
+          <span v-if="step.route == 'location'"> 
+            <Location :location="step" ref="form" />
          
-          <span v-else><Step :step="step" /></span>
+          </span>
+          <span v-else-if="step.route == 'locationtype'">
+             <LocationType :locationtype="step" ref="form" />
+           </span>
+          <span v-else-if="step.route == 'contact'" >
+            <Contact :contact="step" ref="form" /> 
+          </span>
+          <span v-else-if="step.route == 'servicetype'">
+            <service-type :servicetype='step' ref="form" />
+          </span>
+          <span v-else-if="step.route == 'budget'">
+            <budget :budget='step' ref="form" />
+          </span>
+          <span v-else-if="step.route == 'time'">
+            <Time :time='step' ref="form" />
+          </span>
+          <span v-else-if="step.route == 'description'">
+            <Description :description='step' ref="form" />
+          </span>
           
+          <span v-else-if="step.route == 'status'">
+            <Status :status='step' ref="form" />
+          </span>
+
+          <span v-else-if="step.route == 'need'">
+            <Need :need='step' ref="form" />
+          </span>
+          
+          <span v-else>
+            <Step :step="step" />
+          </span>
           <div class="action">
-             <md-button @click="$router.back()" class="md-raised">
+             <md-button @click="next(index-1,'preview')" class="md-raised">
               Preview
             </md-button>
             <md-button
-              @click="next(index + 1)"
+              @click.prevent="next(index + 1,'next')"
               class="md-raised md-primary"
               type="submit"
             >
@@ -28,51 +58,104 @@
       </div>
     </ul>
   </div>
+</div>
 </template>
 
 <script>
 import Location from "./Location";
 import Contact from "./Contact";
-import Multichoice from './Multichoice';
 import Description from './Description';
-import Onechoice from './Onechoice';
-
+import LocationType from './LocationType';
 import Step from "./Step";
 import localData from "../services/localData";
+import ServiceType from './ServiceType';
+import Budget from './Budget.vue';
+import Time from './Time.vue';
+import Status from './Status';
+import Need from './Need.vue';
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Steps",
   data: () => ({
     service: null,
     stepNumber: 0,
+    parentMsg:null,
   }),
   components: {
     Location,
     Step,
     Contact,
-    Multichoice,
-    Onechoice,
     Description,
+    LocationType,
+    ServiceType,
+    Budget,
+    Time,
+    Status,
+    Need,
+    
   },
   methods: {
-    async next(index) {
-      if(index == this.service.steps.length)
+    async next(index,step) {
+      // console.log(JSON.parse(localStorage.getItem("budget")));
+      if(step == "next")
       {
-       this.$router.push("/confirmation");
+        try{
+          console.log(this.$refs['form'][0].nextStep());
+        }
+        catch($err){
+          console.log($err);
+        }
+        if(index == this.service.steps.length)
+        {
+          if(localData.read("contact") == null || localData.read("contact") =="")
+          {
+            this.$router.push("/contact");
+          }
+          else{
+            this.$router.push("/confirmation");
+          }
+        }
+        if(index < 0){
+          this.$router.push('/home');
+        }
+        if (index == this.service.steps.length) {
+          console.log("you reached to last step", index);
+        } else {
+          this.stepNumber = index;
+        }
+        
       }
-      if (index == this.service.steps.length) {
-        console.log("you reached to last step", index);
-      } else {
-        this.stepNumber = index;
-        console.log("index is: ", index);
+      else{
+        if(index == this.service.steps.length)
+        {
+        this.$router.push("/confirmation");
+        }
+        if(index < 0){
+          this.$router.push('/home');
+        }
+        if (index == this.service.steps.length) {
+          console.log("you reached to last step", index);
+        } else {
+          this.stepNumber = index;
+        }
       }
+      
     },
     init() {
       this.service = localData.read("service");
-      console.log("steps lenght: ", this.service.steps);
+      localData.save("order_service",this.service.id);
+
     },
   },
   created() {
     this.init();
+  },
+  computed: {
+    ...mapGetters({
+      authenticated: "auth/authenticated",
+      user: "auth/user",
+    }),
   },
 };
 </script>

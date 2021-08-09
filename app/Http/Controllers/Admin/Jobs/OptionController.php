@@ -86,7 +86,7 @@ class OptionController extends Controller
         $option = Option::find($id);
         $option->title = $request->title;
         $option->step_id=$request->step;
-        $option->service_id = $request->service_id;
+        $option->service_id = $request->service;
         $option->update();
         return response()->json(['message'=>'Updated Successfully!'],200);
     }

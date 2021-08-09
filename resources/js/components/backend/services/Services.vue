@@ -48,8 +48,8 @@
         <md-table-head md-numeric>ID</md-table-head>
         <md-table-head>Name</md-table-head>
         <md-table-head>Type</md-table-head>
-        <md-table-head>Actions</md-table-head>
         <md-table-head>Description</md-table-head>
+        <md-table-head> Actions</md-table-head>
       </md-table-row>
       <md-table-row v-for="service in services.data" :key="service.id">
         <md-table-cell md-numeric>{{ service.id }}</md-table-cell>

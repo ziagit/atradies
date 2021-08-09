@@ -53,7 +53,7 @@ class ShipperOrderController extends Controller
      */
     public function show($id)
     {
-        return Order::with('fullAddress','contacts','items','jobWithStatus')->find($id);
+        return Order::with('addresses','contacts')->find($id);
     }
 
     /**

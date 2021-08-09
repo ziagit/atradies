@@ -10,14 +10,12 @@ import 'vue-material/dist/theme/default.css';
 
 /* import 'vue-material-design-icons/styles.css'; */
 
-
 require('./bootstrap');
 require('./store/subscriber')
 
 window.Vue = require('vue');
 Vue.use(VueRouter);
 Vue.use(VueMaterial)
-
 
 //bootstrpa vue
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'

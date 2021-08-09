@@ -10,31 +10,10 @@
           :initialData="initialData"
         />
       </div>
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="options">
-        <md-radio
-          v-for="size in sizes"
-          :key="size.id"
-          v-model="address.accessories[0]"
-          :value="size.code"
-          >{{ size.name }}</md-radio
-        >
-      </div>
-      <div v-if="supportedArea">
-        <div class="break"></div>
-        <div class="break"></div>
-        <md-card>
-          <md-card-content>
-            <span style="color: red"
-              >Sorry! <b>"{{ supportedArea }}" </b> is not in our coverage area yet.</span
-            >
-          </md-card-content>
-        </md-card>
-      </div>
+      
     </form>
 
-    <Snackbar :data="snackbar" />
+    <!-- <Snackbar :data="snackbar" /> -->
   </div>
 </template>
 
@@ -69,17 +48,18 @@ export default {
   methods: {
     async nextStep() {
       if (
-        this.address.country === "" ||
-        this.address.state === "" ||
-        this.address.city === "" ||
-        this.address.zip === ""
+        this.address.country == null ||
+        this.address.state == null ||
+        this.address.city == null ||
+        this.address.zip == null
       ) {
         this.snackbar.show = true;
         this.snackbar.message = "Please provide a valid address!";
         this.snackbar.statusCode = 404;
+        return false;
       } else {
         await localData.save("address", this.address);
-        this.$router.push("time");
+        return true;
       }
     },
     googleValidAddress(address) {
@@ -122,6 +102,7 @@ export default {
     this.init();
     this.getAccessories();
     localData.save("cRoute", this.$router.currentRoute.path);
+    this.address = localData.read("address");
   },
   components: {
     Snackbar,

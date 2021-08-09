@@ -71,7 +71,7 @@ export default {
     methods: {
         get() {
             axios
-                .get("shipper/orders")
+                .get("shipper/orders/1")
                 .then((res) => {
                     console.log("shipper order ", res.data);
                     this.orders = res.data;

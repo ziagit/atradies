@@ -1,6 +1,19 @@
 <template>
   <div class="container">
     <div class="row">
+          <!--Grid column-->
+          <div class="col-md-12 mb-4">
+
+            <div class="input-group md-form form-sm form-1 pl-0">
+              
+              <input class="form-control my-0 py-1" type="text" @keyup="checkKey" placeholder="Search by service name or description..." aria-label="Search" v-model="form.service">
+              <div class="input-group-prepend">
+                <span @click="filterService" class="input-group-text btn btn-link purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
+                  aria-hidden="true"></i>Go</span>
+              </div>
+            </div>
+
+          </div>
       <div class="col" v-for="service in services" :key="service.id">
         <div @click="next(service)">
           <md-card>
@@ -25,10 +38,14 @@ import VueRouter from "vue-router";
 import localData from "../services/localData";
 import JobLocation from "./JobLocation";
 import router from "../../../routes";
+import axios from 'axios';
 export default {
   name: "Origin",
   data: () => ({
     services: null,
+    form:{
+      service:null,
+    }
   }),
 
   methods: {
@@ -47,6 +64,24 @@ export default {
           console.log("Error: ", err);
         });
     },
+    
+    filterService(){
+      axios
+      .post('filter-services',this.form)
+      .then((res) => {
+        // console.log(res);
+        this.services = res.data;
+      })
+      .catch((err) => {
+        console.log("Error : ",err);
+      });
+    },
+
+    checkKey(event){
+      if(event.keyCode == 13){
+        this.filterService();
+      }
+    }
   },
   created() {
     let routeData = new VueRouter({

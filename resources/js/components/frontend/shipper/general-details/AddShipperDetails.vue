@@ -1,67 +1,52 @@
 <template>
   <div>
-    <form @submit.prevent="submit" enctype="multipart/form-data">
-      <md-card class="main-card">
-        <div class="inputs-container">
-          <div class="row">
-            <md-field>
-              <label for="">First name</label>
-              <md-input
-                type="text"
-                v-model="form.first_name"
-                required
-                ref="focusable"
-              ></md-input>
-            </md-field>
-            <md-field>
-              <label for="">Last name</label>
-              <md-input type="text" v-model="form.last_name" required></md-input>
-            </md-field>
-            <md-field>
-              <label for="">Phone</label>
-              <md-input type="tel" v-model="form.phone" required></md-input>
-            </md-field>
-          </div>
-          <div class="row">
-            <md-field>
-              <label for="">Select country</label>
-              <md-select v-model="form.country" name="country" id="country">
-                <md-option
-                  v-for="country in countries"
-                  :value="country.id"
-                  :key="country.id"
-                  >{{ country.name }}</md-option
-                >
-              </md-select>
-              <input class="hidden-input" v-model="form.country" required />
-            </md-field>
+      <div>
+        <h1>These services you know</h1>
+        <div class="container well">
+          <table class="table table-border table-hovered table-responsive">
+            <thead>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr v-for="user_service in user_services" v-bind:key="user_service.id">
+                <td>{{user_service.name}}</td>
+                <td>
+                  {{user_service.type.title}}
+                </td>
+                <td>
+                  {{user_service.description}}
+                </td>
+                <td>
+                  <a class="btn btn-danger glyphicon glyphicon-trash">Delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h1>What do you know ?</h1>
 
-            <md-field>
-              <label for="">State</label>
-              <md-input v-model="form.state" required></md-input>
-            </md-field>
-
-            <md-field>
-              <label for="">City</label>
-              <md-input v-model="form.city" required></md-input>
-            </md-field>
-          </div>
           <div class="row">
-            <md-field>
-              <label for="">Postal code</label>
-              <md-input v-model="form.zip" required></md-input>
-            </md-field>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+              <form @submit.prevent="submit" >
 
-            <md-field>
-              <label for="">Address</label>
-              <md-input v-model="form.address" required></md-input>
-            </md-field>
+                <div class="form-group" >
+                  <label>Select the services you know </label>
+                  <select  class="form-control" v-model="form.service">
+                    <option v-for="service in services" v-bind:key="service.id" :value="service.id">{{service.name}}</option>
+                  </select>
+                </div>
+                <div class="form-control">
+                  <button  class="btn btn-success form-control" type="submit">Save</button>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-4"></div>
           </div>
         </div>
-        <md-button type="submit" class="md-primary md-small-fab">Save</md-button>
-      </md-card>
-    </form>
-    <Snackbar :data="snackbar" />
+      </div>
   </div>
 </template>
 
@@ -72,21 +57,10 @@ export default {
   name: "AddGeneralInfo",
   data: () => ({
     form: {
-      first_name: null,
-      last_name: null,
-      addressId: null,
-      country: null,
-      state: null,
-      city: null,
-      zip: null,
-      address: null,
-      phone: null,
-      website: null,
-      company: null,
-      detail: null,
+      service:null,
     },
-    countries: null,
-    hasCompany: false,
+    services:[],
+    user_services:[],
     snackbar: {
       show: false,
       message: null,
@@ -97,16 +71,10 @@ export default {
   methods: {
     submit() {
       axios
-        .post("shipper/details", this.form)
+        .post("set-selected-services", this.form)
         .then((res) => {
-          if (
-            localStorage.getItem("order") &&
-            localStorage.getItem("cRoute") === "/order/carriers"
-          ) {
-            this.$router.push("/order/payment-details");
-          } else {
-            this.$router.push("/shipper/profile");
-          }
+          this.user_services.push(res.data.user_service);
+          this.services.splice(res.data.user_service);
         })
         .catch((error) => {
           console.log("eerrr: ", error.response);
@@ -116,22 +84,22 @@ export default {
         });
     },
 
-    getCountries() {
+    getService(){
       axios
-        .get("countries")
-        .then((res) => {
-          this.countries = res.data;
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        });
-    },
+      .get("/get-not-selected-services")
+      .then((response)  => {
+        console.log(response);
+        this.user_services = response.data.user_services;
+        this.services = response.data.services;
+      })
+      .catch((err) => {
+        console.log("Error ocord "+err);
+      });
+    }
   },
-  mounted() {
-    this.$refs.focusable.$el.focus();
-  },
+  
   created() {
-    this.getCountries();
+    this.getService();
   },
   components: {
     Snackbar,

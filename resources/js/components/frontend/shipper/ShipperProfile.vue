@@ -31,14 +31,14 @@
             >Account</md-button
           >
           <md-button
-            to="/shipper"
+            to="/shipper/profile/details"
             v-bind:class="{
               active:
                 $route.name == 'details' ||
                 $route.name == 'add-details' ||
                 $route.name == 'edit-details',
             }"
-            >General</md-button
+            >Services</md-button
           >
           <md-button
             to="/shipper/orders"

@@ -36,7 +36,7 @@ import AddRate from './components/frontend/carrier/rate/AddRate';
 import EditRate from './components/frontend/carrier/rate/EditRate';
 import History from './components/frontend/carrier/history/History';
 import Jobs from './components/frontend/carrier/history/Jobs';
-import JobDetails from './components/frontend/carrier/history/JobDetails';
+import JobDetails from './components/frontend/jobs/JobDetails';
 import CarrierAccountContainer from './components/frontend/carrier/account-details/CarrierAccountContainer';
 import CarrierAccount from './components/frontend/carrier/account-details/CarrierAccount';
 import EditCarrierAccount from './components/frontend/carrier/account-details/EditCarrierAccount';
@@ -93,7 +93,7 @@ import Users from './components/backend/users/Users'
 import About from './components/backend/company/about/About'
 import Contact from './components/backend/company/contact/Contact'
 import TermsAdmin from './components/backend/company/terms/Terms'
-
+import Job from './components/frontend/jobs/Job';
 import store from './store'
 
 function webGuard(to, from, next) {
@@ -156,6 +156,13 @@ export default new VueRouter({
                 { name: 'terms', path: '/terms-and-conditions', component: Terms },
                 { name: 'our-carriers', path: '/carriers', component: OurCarriers },
                 { name: 'our-shippers', path: '/shippers', component: OurShippers },
+                { 
+                    name: 'our-jobs',
+                    path:'/jobs',
+                    component:Job,
+                    
+                },
+                {name:'job-details',path:'jobs/details/:id',component:JobDetails},
                 { name: 'rating', path: '/rating', component: Rating },
                 {
                     name: 'order',
@@ -171,6 +178,7 @@ export default new VueRouter({
                         { name: 'payment-details', path: 'payment-details', component: PaymentDetails },
                     ]
                 },
+
                 { name: 'confirmation', path: 'confirmation', component: Confirmation },
                 { name: 'completion', path: 'completion', component: Completion },
                 { name: 'reviews', path: 'reviews/:id', component: CarrierReviews},
@@ -214,7 +222,6 @@ export default new VueRouter({
                             children: [
                                 { path: '', redirect: 'jobs' },
                                 { name: 'jobs', path: 'jobs', component: Jobs },
-                                { name: 'job-details', path: 'details/:id', component: JobDetails }
                             ]
                         },
                         {
@@ -260,6 +267,7 @@ export default new VueRouter({
                                 { name: 'order-details', path: 'details/:id', component: ShipperOrderDetails },
                             ]
                         },
+                        
                         { name: 'card', path: 'card', component: ShipperCard },
 
                     ],

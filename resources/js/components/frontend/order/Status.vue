@@ -1,104 +1,82 @@
 <template>
-  <div class="status">
-    <span class="md-display-1">What is the status of your job?</span>
-    <div class="break"></div>
-    <form @submit.prevent="nextStep()">
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="options" v-for="status in status" :key="status.id">
-        <md-radio
-          v-if="status.status != ''"
-          class="md-primary"
-          v-model="selected"
-          :value="status.status"
-          >{{ status.status }}</md-radio
-        >
-      </div>
+  <div class="origin">
+    <span class="md-display-1">{{myStatus.title}}</span>
+    <div class="break">
+        <form @submit.prevent="nextStep()">
 
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="action">
-        <md-button to="/order/budget" class="md-icon-button md-raised">
-          <md-icon>arrow_left</md-icon>
-        </md-button>
-        <div class="tab"></div>
-        <md-button class="md-icon-button md-raised md-primary" type="submit">
-          <md-icon>arrow_right</md-icon>
-        </md-button>
-      </div>
-    </form>
-    <Snackbar :data="snackbar" />
+                <b-form-group  v-slot="{ ariaDescribedby }">
+                    <b-form-radio-group
+                        id="radio-group-2"
+                        v-model="form.status"
+                        name="form.status"
+                    >
+                        <b-form-radio  class="form-control" :aria-describedby="ariaDescribedby"  v-for="option in options" v-bind:key="option.id" :value="option.title">
+                            {{option.title}}
+                        </b-form-radio>
+                    </b-form-radio-group>
+                    
+                </b-form-group>
+            </form>
+    </div>
+   
   </div>
 </template>
 
 <script>
-import Snackbar from "../../shared/Snackbar";
-import localData from "../services/localData";
+import axios from 'axios';
+import localData from '../services/localData';
 export default {
-  name: "Origin",
-  data: () => ({
-    selected: null,
-    status: null,
-
-    snackbar: {
-      show: false,
-      message: null,
-      statusCode: null,
+    name:"Status",
+    props:['status'],
+    data: () => ({
+        myStatus:null,
+        options:[],
+        date:null,
+        form:{
+            status:null,
+            title:null,
+        }
+    }),
+    methods:{
+        async init() {
+            this.myStatus = this.status;
+            if(localData.read("status").status != null){
+                this.form.status = localData.read("status").status;
+            }
+            this.form.title = this.status.title;
+        },
+        get(step_id){
+            axios
+            .get('/step-option/'+step_id)
+            .then((response) => {
+                this.options = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        },
+        async nextStep() {
+        if (
+            this.form.status === ""
+            ) {
+                this.snackbar.show = true;
+                this.snackbar.message = "Please Select any one !";
+                this.snackbar.statusCode = 404;
+            } else {
+                await localData.save("status", this.form);
+                
+            }
+        },
     },
-  }),
-
-  methods: {
-    async nextStep() {
-      await localData.save("status", this.selected);
-      this.$router.push("/order/contact");
-    },
-
-    async init() {
-      this.selected = await localData.read("status");
-    },
-    getstatus() {
-      axios
-        .get("status")
-        .then((res) => {
-          this.status = res.data;
-          this.selected = res.data[0].status;
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        });
-    },
-  },
-  created() {
-    this.$emit("progress", 6);
-    this.init();
-    this.getstatus();
-    localData.save("cRoute", this.$router.currentRoute.path);
-  },
-  components: {
-    Snackbar,
-  },
-};
+    created(){
+        this.init();
+        this.get(this.status.id);
+        
+    }
+    
+}
 </script>
 
-<style lang="scss" scoped>
-.status {
-  text-align: center;
-  form {
-    text-align: left;
-    width: 300px;
-    margin: auto;
-    .options {
-      .md-radio {
-        margin: 8px 16px 8px 0;
-      }
-    }
-    .action {
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
+<style>
 
-@media only screen and (max-width: 600px) {
-}
 </style>

@@ -26,8 +26,8 @@
               <md-input  v-model="form.password_confirmation" type="password" required></md-input>
             </md-field>
             <div>
-              <md-radio v-model="form.type" value="carrier">Want to Grow Your Business ?</md-radio>
-              <md-radio v-model="form.type" value="shipper">Want to get a job ?</md-radio>
+              <md-radio v-model="form.type" value="carrier">Customer</md-radio>
+              <md-radio v-model="form.type" value="shipper"> Employee</md-radio>
             </div>
             <md-button type="submit" class="md-primary">Register</md-button>
           </form>

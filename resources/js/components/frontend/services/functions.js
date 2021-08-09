@@ -63,7 +63,10 @@ export default {
             address: await localData.read('address'),
             status: await localData.read('status'),
             budget: await localData.read('budget'),
-            need: await localData.read('need')
+            need: await localData.read('need'),
+            locationtype: await localData.read('locationtype'),
+            servicetype : await localData.read("servicetype"),
+            description : await localData.read("description"),
         }
     }
 

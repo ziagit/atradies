@@ -5,7 +5,10 @@ use App\Http\Controllers\Controller;
 use App\Service;
 use App\Option;
 use App\Itemtype;
+use App\ServiceUser;
+use App\User;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OrderController extends Controller
 {
@@ -91,6 +94,11 @@ class OrderController extends Controller
         return response()->json($services);
     }
   
+    public function filterService(Request $request){
+        $services = Service::with("steps")->where("name",'LIKE','%'.$request->service.'%')
+        ->orWhere('description','LIKE','%'.$request->service.'%')->get();
+        return response()->json($services);
+    }
     public function options($id)
     {
         $options = Option::where('step_id',$id)->get();
@@ -125,5 +133,47 @@ class OrderController extends Controller
     {
         $options = Option::where("step_id",$step_id)->get();
         return response()->json($options);
+    }
+
+    /**
+     * get the services that not selected by auth users
+     */
+    public function getNotSelectedService()
+    {
+        $userServices = \DB::table("service_user")->where("user_id",JWTAuth::user()->id)->get();
+        $serviceId = [];
+        
+        foreach($userServices as  $key => $userService)
+        {
+            $serviceId[$key]  = $userService->service_id;
+        }
+        $user_services = Service::with("type")->whereIn('id',$serviceId)->get();
+        $services  = Service::whereNotIn("id",$serviceId)->get();
+        return response()->json(['services' => $services,'user_services' =>$user_services]);
+    }
+
+    /**
+     * get the services that not selected by auth users
+     */
+    public function setSelectedService(Request $request)
+    {
+        $user = User::find(JWTAuth::user()->id);
+        $user_service = Service::with("type")->find($request->service);
+        ServiceUser::create([
+            'service_id'  => $request->service,
+            'user_id'     => JWTAuth::user()->id,
+        ]);
+        return response()->json(['user_service' => $user_service]);
+    }
+
+    /**
+     * destroy specific user selected service
+     */
+    public function destroyService($id)
+    {
+        $user_service = ServiceUser::where("service_id",$id)->where('user_id',JWTAuth::user()->id)->first();
+        $service = Service::with("type")->find($id);
+        $user_service->delete();
+        return response()->json(['user_service' => $service]);
     }
 }

@@ -9,20 +9,17 @@
             >
               <md-input v-model="form.title" placeholder="Title"></md-input>
             </md-field>
-            <md-field>
-              <select @change="getOption" v-model="form.service" id="service" placeholder="Service" >
-                <option v-for="service in services" :key="service.id" :value="service.id">{{
-                  service.name
-                }}</option>
-              </select>
-            </md-field>
-            <md-field>
-              <md-select v-model="form.step" placeholder="" id="step">
-                <md-option v-for="step in steps" :key="step.id" :value="step.id">{{
-                  step.title
-                }}</md-option>
-              </md-select>
-            </md-field>
+            
+            <b-form-select class="form-group" @change="getOption" v-model="form.service" id="service" placeholder="Service" >
+              <b-form-select-option v-for="service in services" :key="service.id" :value="service.id">
+                {{service.name}}
+              </b-form-select-option>
+            </b-form-select>
+            <b-form-select v-model="form.step" placeholder="Step" id="step">
+              <b-form-select-option v-for="step in steps" :key="step.id" :value="step.id">
+                {{step.title}}
+              </b-form-select-option>
+            </b-form-select>
           </md-content>
         </md-card-content>
         <md-card-actions>

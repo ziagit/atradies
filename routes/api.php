@@ -56,7 +56,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('details', 'ShipperDetailsController');
     Route::resource('account', 'ShipperAccountController');
     Route::resource('orders', 'ShipperOrderController');
-
     Route::get('order-status', 'ShipperOrderController@status');
     Route::get("card-details", 'CardController@getCustomer');
     Route::get('shipper-address', "ShipperAccountController@shipperAddress");
@@ -117,8 +116,14 @@ Route::group(['namespace' => 'Order'], function () {
   Route::post('charge', 'CheckoutController@store');
   Route::get('payment-status/{orderId}', 'CheckoutController@checkPayment');
   Route::get("check-payment/{id}", 'CheckoutController@checkPayment');
+  
+  Route::get('get-not-selected-services', 'OrderController@getNotSelectedService');
+  Route::post('set-selected-services', 'OrderController@setSelectedService');
+  Route::delete("shipper/service/delete/{id}","OrderController@destroyService");
+
 
   Route::get('get-services', 'OrderController@services');
+  Route::post('filter-services','OrderController@filterService');
   Route::get('get-options/{id}', 'OrderController@options');
   Route::get('delivery-services', 'OrderController@deliveryServices');
   Route::get('pick-date', 'OrderController@pickDate');
