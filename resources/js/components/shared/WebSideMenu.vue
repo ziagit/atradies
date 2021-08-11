@@ -19,7 +19,7 @@
         <span
           class="md-list-item-text"
           v-bind:class="{ active: $route.name == 'our-jobs' }"
-          >Jobs</span
+          >Jobs For You</span
         >
       </md-list-item>
 
@@ -33,14 +33,7 @@
             </md-list>
         </md-list-item>-->
 
-      <md-list-item to="/carriers" @click="hideMenu()">
-        <!--<md-icon v-bind:class="{active: $route.name == 'carriers'}">local_shipping</md-icon>-->
-        <span
-          class="md-list-item-text"
-          v-bind:class="{ active: $route.name == 'our-carriers' }"
-          >Carriers</span
-        >
-      </md-list-item>
+      
       <md-list-item to="/help" @click="hideMenu()">
         <!--<md-icon v-bind:class="{active: $route.name == 'help'}">help</md-icon>-->
         <span class="md-list-item-text" v-bind:class="{ active: $route.name == 'help' }"

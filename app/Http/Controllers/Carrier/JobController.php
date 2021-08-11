@@ -150,4 +150,6 @@ class JobController extends Controller
     {
         return Jobstatus::where('id' ,'<>', 6)->get();
     }
+
+    
 }

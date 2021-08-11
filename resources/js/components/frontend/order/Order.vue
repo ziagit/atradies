@@ -17,7 +17,7 @@
       <div class="break"></div>
       <div class="break"></div>
       <div class="row inputs">
-        <router-view v-on:progress="progress"></router-view>
+        <router-view v-on:progress="progress" @myevent="setProgressValue(a,b,c)"></router-view>
       </div>
     </div>
     <Footer />
@@ -40,6 +40,11 @@ export default {
       this.completedSteps = prgValue;
       this.percentage = Math.floor((prgValue * 100) / this.totalSteps);
     },
+    setProgressValue(completedSteps,totalSteps,percentage){
+      this.completedSteps = completedSteps;
+      this.totalSteps = totalSteps;
+      this.percentage = percentage;
+    }
   },
 
   created() {},

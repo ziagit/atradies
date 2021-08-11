@@ -121,4 +121,16 @@ class StepController extends Controller
         $services = Service::all();
         return response()->json($services);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $steps= Step::with('service')
+        ->where("title","LIKE","%".$request->keywords."%")->paginate(5);
+        return response()->json($steps);
+    }
 }

@@ -8,18 +8,7 @@
             <md-card-content>
                 <div class="row">
                     <!--Grid column-->
-                    <div class="col-md-12 mb-4">
-
-                        <div class="input-group md-form form-sm form-1 pl-0">
-                        
-                        <input class="form-control my-0 py-1" type="text"  placeholder="Search by service name or description..." aria-label="Search" >
-                        <div class="input-group-prepend">
-                            <span  class="input-group-text btn btn-link purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
-                            aria-hidden="true"></i>Go</span>
-                        </div>
-                        </div>
-
-                    </div>
+                    
                     <div class="col col-md-12 md-content pinter" v-for="job in jobs" :key="job.id">
                         <div>
                             <md-card>
@@ -30,7 +19,7 @@
                                 
                                     </div>
                                     <div class="col-md-8">
-                                        <router-link :to="'jobs/details/'+job.user_jobId" target="_blank">
+                                        <router-link :to="'jobs/details/'+job.user_jobId" >
                                             <h3>
                                                 {{job.service.name}}
                                             </h3>

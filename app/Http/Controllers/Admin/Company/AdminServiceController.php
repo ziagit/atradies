@@ -112,8 +112,9 @@ class AdminServiceController extends Controller
     public function search(Request $request)
     {
         $keywords = $request->keywords;
-        $service = service::where('title', 'like', '%' . $keywords . '%')
-            ->paginate(8);
+        $service = service::with("type")->where('name', 'like', '%' . $keywords . '%')
+        ->orWhere('description', 'like', '%' . $keywords . '%')
+        ->paginate(8);
         return $service;
     }
 }

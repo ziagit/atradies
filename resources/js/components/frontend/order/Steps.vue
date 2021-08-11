@@ -81,6 +81,9 @@ export default {
     service: null,
     stepNumber: 0,
     parentMsg:null,
+    completedSteps:null,
+    totalSteps:null,
+    percentage:null
   }),
   components: {
     Location,
@@ -97,6 +100,7 @@ export default {
   },
   methods: {
     async next(index,step) {
+      this.setProgress(index);
       // console.log(JSON.parse(localStorage.getItem("budget")));
       if(step == "next")
       {
@@ -147,9 +151,18 @@ export default {
       localData.save("order_service",this.service.id);
 
     },
+    setProgress(index){
+      this.totalSteps = this.service.steps.length;
+      this.completedSteps = index;
+      this.percentage   =  index*(100/this.totalSteps);
+      this.$parent.setProgressValue(this.completedSteps,this.totalSteps,this.percentage);
+
+    }
   },
   created() {
     this.init();
+    this.setProgress();
+    this.setProgress(0);
   },
   computed: {
     ...mapGetters({

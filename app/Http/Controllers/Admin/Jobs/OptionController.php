@@ -107,4 +107,19 @@ class OptionController extends Controller
         $steps = Step::where("service_id",$service_id)->get();
         return response()->json($steps);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $options= Option::where("title","LIKE","%".$request->keywords."%")
+        ->orWhereHas('service', function ($q) use ($request) {
+            return $q->where('title', 'like', '%' . $request->keywords . '%');
+        })
+        ->with("service")->with('step')->paginate(5);
+        return response()->json($options);
+    }
 }

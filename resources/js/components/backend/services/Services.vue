@@ -98,7 +98,7 @@ export default {
   methods: {
     search() {
       axios
-        .get("search-service", {
+        .get("admin/search-service", {
           params: {
             keywords: this.keywords,
           },

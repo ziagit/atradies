@@ -1,5 +1,5 @@
 <template>
-  <div class="origin">
+  <div class="col-md-12">
     <span class="md-display-1">{{myLocation.title}}</span>
     <div class="break"></div>
     <form @submit.prevent="nextStep()">

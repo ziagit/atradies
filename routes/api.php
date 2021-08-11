@@ -17,8 +17,12 @@ Route::resource("services", "Admin\Jobs\ServiceController");
 Route::get('get-services','Admin\Jobs\ServiceController@getService');
 Route::resource("types", "Admin\Jobs\TypeController");
 Route::resource("steps", "Admin\Jobs\StepController");
+Route::get("search-step", "Admin\Jobs\StepController@search");
+
 Route::get("steps-services", "Admin\Jobs\StepController@services");
 Route::resource("options", "Admin\Jobs\OptionController");
+Route::get("search-option", "Admin\Jobs\OptionController@search");
+
 Route::get("options-steps/{service_id}", "Admin\Jobs\OptionController@steps");
 
 Route::post('forgot-password', 'Auth\ResetPasswordController@forgot');
@@ -31,6 +35,8 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   Route::post('signin', 'SignInController')->name('signin');
   Route::post('signup', 'SignUpController');
 });
+Route::get('about-us', 'AboutController@aboutUs');
+
 Route::group(['middleware' => 'auth:api'], function () {
   Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function () {
     Route::get('me', 'MeController');
@@ -60,6 +66,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("card-details", 'CardController@getCustomer');
     Route::get('shipper-address', "ShipperAccountController@shipperAddress");
   });
+
   Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'role'], function () {
     Route::resource('about', 'Company\AdminAboutController');
     Route::resource('terms', 'Company\AdminTermsController');
@@ -91,7 +98,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('search-order', 'AdminOrderController@search');
     Route::resource('contact', 'Company\AdminContactController');
     Route::resource('services', 'Company\AdminServiceController');
-    Route::get('search-service', 'AdminServiceController@search');
+    Route::get('search-service', 'Company\AdminServiceController@search');
 
     Route::resource('carrier/accessories', 'AdminCarrierAccessoryController');
     Route::delete('carrier/accessories/{cId}/{aId}', 'AdminCarrierAccessoryController@destroy');

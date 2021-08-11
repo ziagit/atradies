@@ -88,6 +88,7 @@ class AdminUserController extends Controller
     {
         $keywords = $request->keywords;
         $user = User::where('name', 'like', '%' . $keywords . '%')
+            ->orWhere('email','LIKE','%'.$request->keywords."%")
             ->orWhereHas('roles', function ($q) use ($keywords) {
                 return $q->where('name', 'like', '%' . $keywords . '%');
             })
