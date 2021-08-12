@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Citycode;
 use App\Http\Controllers\Controller;
 use App\Order;
+use App\UserJob;
 use Illuminate\Http\Request;
 
 class AdminOrderController extends Controller
@@ -16,8 +17,12 @@ class AdminOrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('shipper','fullAddress', 'items','jobWithStatus')->paginate(10);
-        return response()->json($orders);
+       
+        $orders = Order::with('service')->with('addresses')->with("contacts")->with('user')
+        
+        ->orderBy("orders.id",'desc')
+        ->paginate(8);
+        return $orders;
     }
 
     /**
@@ -83,6 +88,8 @@ class AdminOrderController extends Controller
      */
     public function destroy($id)
     {
+        // $user_job = UserJob::where("order_id",$id)->get();
+        // $user_job->delete();
         if ($order = Order::find($id)) {
             $order->delete();
             return response()->json(["message" => "Deleted Successfully."]);
@@ -92,13 +99,27 @@ class AdminOrderController extends Controller
 
     public function search(Request $request)
     {
-        $keywords = $request->keywords;
-        $citycodes = Citycode::where('postal_code', 'like', '%' . $keywords . '%')
-            ->orWhereHas('cities', function ($q) use ($keywords) {
-                return $q->where('name', 'like', '%' . $keywords . '%');
-            })
-            ->with('cities')
-            ->paginate(10);
-        return $citycodes;
+        $orders = Order::with('service')->with('addresses')->with("contacts")->with('user')
+        ->orWhereHas('service', function ($q) use ($request) {
+            return $q->where('name', 'like', '%' . $request->keywords . '%');
+        })
+        ->orWhereHas('user', function ($q) use ($request) {
+            return $q->where('name', 'like', '%' . $request->keywords . '%');
+        })
+        ->orWhereHas('contacts', function ($q) use ($request) {
+            return $q->where('name', 'like', '%' . $request->keywords . '%')
+            ->orWhere('email', 'like', '%' . $request->keywords . '%')
+            ->orWhere('phone', 'like', '%' . $request->keywords . '%');
+        })
+        ->orWhereHas('addresses', function ($q) use ($request) {
+            return $q->where('country', 'like', '%' . $request->keywords . '%')
+            ->orWhere('city', 'like', '%' . $request->keywords . '%')
+            ->orWhere('street', 'like', '%' . $request->keywords . '%')
+            ->orWhere('zip', 'like', '%' . $request->keywords . '%');
+        })
+        
+        ->orderBy("orders.id",'desc')
+        ->paginate(8);
+        return $orders;
     }
 }

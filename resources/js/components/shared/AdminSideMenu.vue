@@ -15,6 +15,10 @@
         <span class="md-list-item-text">Options</span>
       </md-list-item>
 
+      <md-list-item to="/admin/orders" @click="hideMenu()">
+        <span class="md-list-item-text">Orders</span>
+      </md-list-item>
+
       <md-list-item md-expand :md-expanded.sync="expandLookups">
         <span class="md-list-item-text">Lookups</span>
         <md-list slot="md-expand">

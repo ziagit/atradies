@@ -16,7 +16,7 @@
       </div>
       <div class="break"></div>
       <div class="break"></div>
-      <div class="row inputs">
+      <div class="">
         <router-view v-on:progress="progress" @myevent="setProgressValue(a,b,c)"></router-view>
       </div>
     </div>
@@ -70,6 +70,8 @@ export default {
     }
   }
 }
+
+
 
 @media only screen and (max-width: 600px) {
 }

@@ -2,7 +2,8 @@
   <div class="container">
     <div class="row">
           <!--Grid column-->
-          <div class="col-md-12 mb-4">
+          <div class="col-md-2"></div>
+          <div class="col-md-8 mb-4">
 
             <div class="input-group md-form form-sm form-1 pl-0">
               
@@ -14,6 +15,8 @@
             </div>
 
           </div>
+          <div class="col-md-2"></div>
+
       <div class="col" v-for="service in services" :key="service.id">
         <div @click="next(service)">
           <md-card>

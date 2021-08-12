@@ -78,5 +78,7 @@ export default {
 </script>
 
 <style>
-
+.form-control{
+  border: none !important;
+}
 </style>

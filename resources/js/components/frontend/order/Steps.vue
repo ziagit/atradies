@@ -1,7 +1,7 @@
 <template>
 <div>
   
-  <div class="steps md-card md-default col-md-12">
+  <div class="steps md-card md-default ">
     
     <ul>
       <div v-for="(step, index) in service.steps" :key="index">
