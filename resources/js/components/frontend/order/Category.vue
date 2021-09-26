@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="containerr">
     <div class="row">
           <!--Grid column-->
           <div class="col-md-2"></div>
@@ -7,7 +7,7 @@
 
             <div class="input-group md-form form-sm form-1 pl-0">
               
-              <input class="form-control my-0 py-1" type="text" @keyup="checkKey" placeholder="Search by service name or description..." aria-label="Search" v-model="form.service">
+              <input class="form-control my-0 py-1" type="text" @keyup="checkKey" placeholder="Search by service name or description..." aria-label="Search" v-model="form.service" style="border: 1px solid #ced4da !important;" >
               <div class="input-group-prepend">
                 <span @click="filterService" class="input-group-text btn btn-link purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
                   aria-hidden="true"></i>Go</span>
@@ -101,7 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerr {
   text-align: center;
   .row {
     display: flex;

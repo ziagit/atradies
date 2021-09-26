@@ -10,7 +10,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="js/v3.js"></script>
     <!-- Fonts -->
-    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+
     <script  src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAQTHaD2g0BjmczBlX73Vv-KthtHzdRYPk"></script>
     <style>                                                                    
         html,

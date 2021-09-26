@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="">
       <Header v-on:togal-menu="$emit('togal-menu')" :scrollValue="scrollValue"  />
         <md-card md-theme="orange-card">
             <md-card-header>

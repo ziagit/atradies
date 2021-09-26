@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="containerr">
     <Header v-on:togal-menu="$emit('togal-menu')" />
     <div class="content">
       <div class="md-display-1">
@@ -47,14 +47,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerr {
   .content {
     text-align: center;
-    height: calc(100vh);
+    height: calc(60vh);
     text-align: center;
     max-width: 1000px;
     margin: auto;
-    padding-top: 9%;
+    padding-top: 5%;
     .md-display-1 {
       font-weight: 700;
       font-size: 29px;

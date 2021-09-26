@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="containerr">
     <div
       class="section0"
       v-bind:style="{ 'background-image': 'url(/images/uploads/help.svg)' }"
@@ -107,7 +107,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.container {
+.containerr {
   background: #fff;
 
   .section0 {

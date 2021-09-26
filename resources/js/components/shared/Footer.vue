@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="rows">
       <div class="row social-media">
-        <div class="md-headline"><span class="logo">Jawadi</span></div>
+        <div class="md-headline"><span class="logo">Jawadi : </span></div>
         <div class="md-body-1">Stay in touch & get update from social media</div>
         <div class="icons">
           <a href="https://facebook.com"
@@ -16,23 +16,14 @@
           /></a>
         </div>
       </div>
+      
       <div class="row">
-        <div class="md-headline">Company</div>
+        <div class="md-headline"><span class="logo">Company : &nbsp;</span></div>
+
         <ul>
           <li>
             <router-link to="/about">About</router-link>
           </li>
-          <li>
-            <router-link to="/shippers">Shipper</router-link>
-          </li>
-          <li>
-            <router-link to="/carriers">Carrier</router-link>
-          </li>
-        </ul>
-      </div>
-      <div class="row">
-        <div class="md-headline">Support</div>
-        <ul>
           <li>
             <router-link to="/how-it-works">How it works</router-link>
           </li>

@@ -156,7 +156,6 @@ export default {
       this.completedSteps = index;
       this.percentage   =  index*(100/this.totalSteps);
       this.$parent.setProgressValue(this.completedSteps,this.totalSteps,this.percentage);
-
     }
   },
   created() {

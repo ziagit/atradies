@@ -17,6 +17,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .form-control{
+            border: 1px solid red !important;
+        }
+    </style>
 </head>
 <body>
     <div id="app">

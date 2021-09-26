@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="containerr">
     <Header v-on:togal-menu="$emit('togal-menu')" />
     <div class="content">
       <div class="row progress-bar">
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerr {
   .content {
     max-width: 600px;
     min-height: calc(100vh - 15px);
