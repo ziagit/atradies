@@ -14,13 +14,21 @@
           <div>
             <div class="item-head"><b>Address</b></div>
             <div class="item">
-              <div class="md-body-1">{{ job.address.formatted_address }}</div>
+              <div class="md-body-1" v-if="job.address != null">
+                Country : {{ job.address.country }} <br>
+                State : {{job.address.state}}  <br>
+                City : {{job.address.city}}  <br>
+                Zip : {{job.address.zip}} <br>
+                Street : {{job.address.street}} <br>
+                Street Number : {{job.address.street_number}}
+
+              </div>
             </div>
           </div>
           <md-divider class="md-inset"></md-divider>
           <div>
             <div class="item-head"><b>Contacts</b></div>
-            <div class="item">
+            <div class="item" v-if="job.contact != null">
               <div class="md-body-1">Name: {{ job.contact.name }}</div>
               <div class="md-body-1">Phone: {{ job.contact.phone }}</div>
               <div class="md-body-1">Email: {{ job.contact.email }}</div>
@@ -30,11 +38,11 @@
           <div>
             <div class="item-head"><b>Other informations</b></div>
             <div class="item">
-              <div class="md-body-1">When should start: {{ job.time.title }}</div>
-              <div class="md-body-1">Type of service: {{ job.service.name }}</div>
-              <div class="md-body-1">What needs work: {{ job.need }}</div>
-              <div class="md-body-1">Job status: {{ job.status }}</div>
-              <div class="md-body-1">What is budget: {{ job.budget.title }}</div>
+              <div class="md-body-1" v-if="job.time != null">{{job.time.title}} : {{ job.time.time }}</div>
+              <div class="md-body-1" v-if="job.locationtype != null">{{job.locationtype.title}}: {{ job.locationtype.locationtype }}</div>
+              <div class="md-body-1" v-if="job.servicetype != null">{{job.servicetype.title}}: {{ job.servicetype.servicetype }}</div>
+              <div class="md-body-1" v-if="job.budget != null">{{job.budget.title}}: {{ job.budget.budget }}</div>
+              <div class="md-body-1" v-if="job.description != null">{{job.description.title}} : {{ job.description.description }}</div>
             </div>
           </div>
 
@@ -91,6 +99,7 @@ import TermsAndConditions from "../../shared/TermsAndConditions";
 
 import Header from "../../shared/Header";
 import Footer from "../../shared/Footer";
+import localData from '../services/localData';
 
 export default {
   name: "Confirmation",
@@ -104,6 +113,19 @@ export default {
       message: null,
       statusCode: null,
     },
+      form:{
+      time:null,
+      service:null,
+      contact:null,
+      address:null,
+      status:null,
+      budget:null,
+      need:null,
+      locationtype:null,
+      servicetype:null,
+      description:null,
+      order_service:null,
+    }
   }),
   methods: {
     confirm() {
@@ -112,9 +134,15 @@ export default {
       axios
         .post("confirm", JSON.parse(localStorage.getItem("order")))
         .then((res) => {
-          this.$router.push("completion");
-          console.log("data: ", res.data);
-          this.dataLoading = false;
+          if(res.data.status)
+          {
+            this.$router.push("completion");
+            this.emptyItem();
+            this.dataLoading = false;
+          }
+          else{
+            alert(res.data);
+          }  
         })
         .catch((err) => {
           this.dataLoading = false;
@@ -132,9 +160,40 @@ export default {
         console.log("xxxxxxxx", this.job);
       });
     },
+
+    setItems(){
+      this.form.time = localData.read('time');
+      this.form.service = localData.read('service');
+      this.form.contact = localData.read('contact');
+      this.form.address = localData.read('address');
+      this.form.status = localData.read('status');
+      this.form.budget = localData.read('budget');
+      this.form.need = localData.read('need');
+      this.form.locationtype = localData.read('locationtype');
+      this.form.servicetype = localData.read("servicetype");
+      this.form.description = localData.read("description");
+      this.form.order_service = localData.read('order_service');
+      localData.save("order",this.form);
+    },
+
+    emptyItem(){
+      localData.remove('time');
+      localData.remove('service');
+      localData.remove('contact');
+      localData.remove('address');
+      localData.remove('status');
+      localData.remove('budget');
+      localData.remove('need');
+      localData.remove('locationtype');
+      localData.remove("servicetype");
+      localData.remove("description");
+      localData.remove('order_service');
+    }
   },
   created() {
     this.init();
+    this.setItems();
+    console.log(JSON.parse(localStorage.getItem("order")));
   },
   components: {
     Spinner,

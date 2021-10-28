@@ -64,8 +64,10 @@ class ShipperDetailsController extends Controller
         $shipper->address_id = $addressId;
         $shipper->contact_id = $contactId;
         $shipper->user_id = JWTAuth::user()->id;
-        $shipper->save();
-        return response()->json(["message" => "Saved successfully!"], 200);
+        if($shipper->save()){
+            return response()->json(['status' => true,"message" => "Saved successfully!"], 200);
+        }
+        return response()->json(['status' => false,'message' => 'Not saved']);
     }
 
     public function storeContact($request){

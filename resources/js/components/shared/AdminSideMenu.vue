@@ -15,61 +15,20 @@
         <span class="md-list-item-text">Options</span>
       </md-list-item>
 
+      <md-list-item to="/admin/orders" @click="hideMenu()">
+        <span class="md-list-item-text">Orders</span>
+      </md-list-item>
+
       <md-list-item md-expand :md-expanded.sync="expandLookups">
         <span class="md-list-item-text">Lookups</span>
         <md-list slot="md-expand">
           <md-list-item class="md-inset" to="/admin/countries" @click="hideMenu()"
             >Country</md-list-item
           >
-          <md-list-item class="md-inset" to="/admin/states" @click="hideMenu()"
-            >States</md-list-item
-          >
-          <md-list-item class="md-inset" to="/admin/cities" @click="hideMenu()"
-            >Cities</md-list-item
-          >
-          <!--<md-list-item class="md-inset" to="/admin/addresses" @click="hideMenu()"
-            >Addresses</md-list-item
-          >
-          <md-list-item class="md-inset" to="/admin/zips" @click="hideMenu()"
-            >Zip codes</md-list-item
-          >-->
-          <md-list-item class="md-inset" to="/admin/accessories" @click="hideMenu()"
-            >Accessories</md-list-item
-          >
-          <md-list-item class="md-inset" to="/admin/rate-ranges" @click="hideMenu()"
-            >Rate ranges</md-list-item
-          >
+          
         </md-list>
       </md-list-item>
 
-      <md-list-item md-expand :md-expanded.sync="expandCarriers">
-        <span class="md-list-item-text">Carriers</span>
-        <md-list slot="md-expand">
-          <md-list-item class="md-inset" to="/admin/carriers" @click="hideMenu()"
-            >Carriers</md-list-item
-          >
-          <md-list-item class="md-inset" to="/admin/rates" @click="hideMenu()"
-            >Rates</md-list-item
-          >
-          <md-list-item
-            class="md-inset"
-            to="/admin/carrier/accessories"
-            @click="hideMenu()"
-            >Accessories</md-list-item
-          >
-        </md-list>
-      </md-list-item>
-      <md-list-item md-expand :md-expanded.sync="expandShippers">
-        <span class="md-list-item-text">Shippers</span>
-        <md-list slot="md-expand">
-          <md-list-item class="md-inset" to="/admin/shippers" @click="hideMenu()"
-            >Shippers</md-list-item
-          >
-          <md-list-item class="md-inset" to="/admin/orders" @click="hideMenu()"
-            >Orders</md-list-item
-          >
-        </md-list>
-      </md-list-item>
 
       <md-list-item to="/admin/users" @click="hideMenu()">
         <span class="md-list-item-text">Users list</span>
@@ -83,9 +42,7 @@
           <md-list-item class="md-inset" to="/admin/contact" @click="hideMenu()"
             >Contact</md-list-item
           >
-          <md-list-item class="md-inset" to="/admin/terms" @click="hideMenu()"
-            >Terms</md-list-item
-          >
+          
         </md-list>
       </md-list-item>
 

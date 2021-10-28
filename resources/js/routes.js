@@ -36,14 +36,14 @@ import AddRate from './components/frontend/carrier/rate/AddRate';
 import EditRate from './components/frontend/carrier/rate/EditRate';
 import History from './components/frontend/carrier/history/History';
 import Jobs from './components/frontend/carrier/history/Jobs';
-import JobDetails from './components/frontend/carrier/history/JobDetails';
+import JobDetails from './components/frontend/jobs/JobDetails';
 import CarrierAccountContainer from './components/frontend/carrier/account-details/CarrierAccountContainer';
 import CarrierAccount from './components/frontend/carrier/account-details/CarrierAccount';
 import EditCarrierAccount from './components/frontend/carrier/account-details/EditCarrierAccount';
 import CarrierCard from './components/frontend/carrier/card-details/CarrierCard';
 
-import Order from './components/frontend/order/Order';
-import JobLocation from './components/frontend/order/JobLocation'
+import Order from './components/frontend/order/Order'
+import Steps from './components/frontend/order/Steps'
 import JobBudget from './components/frontend/order/Budget'
 import JobDate from './components/frontend/order/JobDate'
 import Carriers from './components/frontend/order/Carriers'
@@ -80,7 +80,7 @@ import RateRanges from './components/backend/lookups/rate-ranges/RateRanges'
 import AdminServices from './components/backend/services/Services'
 import AdminSteps from './components/backend/services/steps/Steps'
 import AdminOptions from './components/backend/services/steps/options/Options'
-
+import AdminOrders from './components/backend/services/orders/Orders'
 import CarrierList from './components/backend/carrier/CarrierList'
 import CustomerAddress from './components/backend/address/CustomerAddress'
 import CarrierAccessories from './components/backend/carrier/accessories/CarrierAccessories'
@@ -93,7 +93,7 @@ import Users from './components/backend/users/Users'
 import About from './components/backend/company/about/About'
 import Contact from './components/backend/company/contact/Contact'
 import TermsAdmin from './components/backend/company/terms/Terms'
-
+import Job from './components/frontend/jobs/Job';
 import store from './store'
 
 function webGuard(to, from, next) {
@@ -156,21 +156,29 @@ export default new VueRouter({
                 { name: 'terms', path: '/terms-and-conditions', component: Terms },
                 { name: 'our-carriers', path: '/carriers', component: OurCarriers },
                 { name: 'our-shippers', path: '/shippers', component: OurShippers },
+                { 
+                    name: 'our-jobs',
+                    path:'/jobs',
+                    component:Job,
+                    
+                },
+                {name:'job-details',path:'jobs/details/:id',component:JobDetails},
                 { name: 'rating', path: '/rating', component: Rating },
                 {
                     name: 'order',
                     path: 'order',
                     component: Order,
                     children: [
-                        { path: '', redirect: 'job-location' },
-                        { name: 'location', path: 'location', component: JobLocation, /* beforeEnter: orderGuard */ },
-                        { name: 'date', path: 'date', component: JobDate },
+                        { path: '', redirect: 'step' },
+                        { name: 'steps', path: 'steps', component: Steps, /* beforeEnter: orderGuard */ },
+                        //{ name: 'date', path: 'date', component: JobDate },
                         { name: 'budget', path: 'budget', component: JobBudget },
                         { name: 'contact', path: 'contact', component: JobContact },
                         { name: 'carriers', path: 'carriers', component: Carriers },
                         { name: 'payment-details', path: 'payment-details', component: PaymentDetails },
                     ]
                 },
+
                 { name: 'confirmation', path: 'confirmation', component: Confirmation },
                 { name: 'completion', path: 'completion', component: Completion },
                 { name: 'reviews', path: 'reviews/:id', component: CarrierReviews},
@@ -214,7 +222,6 @@ export default new VueRouter({
                             children: [
                                 { path: '', redirect: 'jobs' },
                                 { name: 'jobs', path: 'jobs', component: Jobs },
-                                { name: 'job-details', path: 'details/:id', component: JobDetails }
                             ]
                         },
                         {
@@ -260,6 +267,7 @@ export default new VueRouter({
                                 { name: 'order-details', path: 'details/:id', component: ShipperOrderDetails },
                             ]
                         },
+                        
                         { name: 'card', path: 'card', component: ShipperCard },
 
                     ],
@@ -286,13 +294,13 @@ export default new VueRouter({
                         { name: 'services', path: 'services', component: AdminServices },
                         { name: 'steps', path: 'steps', component: AdminSteps },
                         { name: 'options', path: 'options', component: AdminOptions },
-
+                        // { name: 'orders',path: 'orders',component: AdminOrders},
                         { name: 'carriers', path: 'carriers', component: CarrierList },
                         { name: 'rates', path: 'rates', component: Rates },
                         { name: 'customer-addresses', path: 'customer/addresses', component: CustomerAddress },
                         { name: 'carrier-accessories', path: 'carrier/accessories', component: CarrierAccessories },
                         { name: 'shippers', path: 'shippers', component: Shippers },
-                        { name: 'orders', path: 'orders', component: Orders },
+                        { name: 'orders', path: 'orders', component: AdminOrders },
                         { name: 'order', path: 'order/:id', component: OrderDetails },
                         { name: 'users', path: 'users', component: Users },
 

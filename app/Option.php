@@ -12,4 +12,9 @@ class Option extends Model
     public function step(){
         return $this->belongsTo(Step::class);
     }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }

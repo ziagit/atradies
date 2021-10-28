@@ -8,15 +8,20 @@ use App\Item;
 use App\Order;
 use App\Accessory;
 use App\Carrier;
-use App\Job;
 use App\Notifications\JobCreated;
 use App\Address;
 use App\Contact;
 use App\Country;
+use App\Jobs\SendJobMessage;
+use App\Mail\SendJobEmail;
+use App\Role;
 use App\User;
+use App\UserJob;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ShipmentController extends Controller
 {
@@ -48,83 +53,122 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
+        
       try{
-        $shipperId = $this->storeShipper($request->shipper);
-
-        if ($shipperId) {
-            $orderId = $this->storeOrder($request, $shipperId);
+        $user = null;
+        $userId = null;
+        if(JWTAuth::user())
+        {
+            $userId = JWTAuth::user()->id;
+        }
+        else{
+            $user = User::where("email",$request->contact['email'])->first();
+            if($user != ""){
+                $userId = $user->id;
+            }
+            else{
+                $user = User::create(
+                    [
+                        'name'  => $request->contact['name'],
+                        'email' => $request->contact['email'],
+                        'password'  => bcrypt("password123"),
+                    ]
+                    );
+                    $userId = $user->id;
+                    $role = Role::where('name', '=', 'shipper')->first();
+                    $user->roles()->attach($role);
+            }
+        }
+        
+        if ($userId) {
+            $orderId = $this->storeOrder($request, $userId);
             
-            $job = $this->createNewJob($orderId, $shipperId, $request->carrier);
+            $users = User::select('users.name','users.id','users.email','service_user.id as serviceUserId')->join("service_user",'users.id','service_user.user_id')
+            ->where('service_user.service_id',$request->order_service)->get();
+             if($this->createNewJob($orderId, $userId, $users))
+             {
+                return response()->json(['status' => true,"message" => "Saved successfully!"], 200);
+             }
 
-            $user  = Carrier::with('user')->find($request->carrier['id'])->user;
-            $admin = User::find(1);
-
-            $user->notify(new JobCreated($job));
-
-            $admin->notify(new JobCreated($job));
-            return response()->json($user->notifications);
+            
+            // return response()->json($user->notifications);
+            return response()->json(['status' => false]);
         }
       }catch(Exception $e){
           return response()->json($e->getMessage());
       }
     }
-    public function storeOrder($request, $shipperId)
+
+    
+
+    public function storeOrder($request,$userId)
     {
-        $contactId = $this->storeContact($request);
         $addressId = $this->storeAddress($request);
+
+        $contactId = $this->storeContact($request);
     
         $order =new Order();
-        $order->budget = $request->budget;
-        $order->need = $request->need;
-        $order->service = $request->service;
-        $order->status = $request->status;
-        $order->time = $request->time;
-        $order->instructions = $request->instructions;
+        $order->budget = $request->budget ? $request->budget['budget'] : null;
+        $order->need = $request->need ?$request->need['need']:null;
+        $order->service = $request->servicetype ? $request->servicetype['servicetype'] : null;
+        $order->status = $request->status ? $request->status['status']:null;
+        $order->location_type = $request->locationtype ? $request->locationtype['locationtype']:null;
+        $order->time = $request->time ? $request->time['time']:null;
+        $order->description = $request->description ? $request->description['description']:null;
         $order->contact_id = $contactId;
         $order->address_id = $addressId;
+        $order->service_id = $request->order_service ? $request->order_service:null;
+        $order->user_id  = $userId;
         
 
-        $order->shipper_id = $shipperId;
 
         $order->save();
-        
         
         return $order->id;
     }
 
     public function storeContact($request){
         $contact = [
-            'name' => $request->contact['name'],
-            'phone' => $request->contact['phone'],
-            'email' => $request->contact['email']
+            'name' => $request->contact ? $request->contact['name']:null,
+            'phone' => $request->contact ? $request->contact['phone']:null,
+            'email' => $request->contact ? $request->contact['email']:null
         ];
         $id = Contact::insertGetId($contact);
         return $id;
     }
     public function storeAddress($request){
-        $countryId = Country::where('name', $request->address['country'])->first();
+        // $countryId = Country::where('name', $request->address['country'])->first();
         $addressAddress = [
-            'street' => $request->address['street'],
-            'street_number' => $request->address['street_number'],
-            'zip' => $request->address['zip'],
-            'city' => $request->address['city'],
-            'state' => $request->address['state'],
-            'formatted_address' => $request->address['formatted_address'],
-            'country_id' => $countryId->id
+            'street' => $request->address ? $request->address['street'] : null,
+            'street_number' => $request->address ? $request->address['street_number'] : null,
+            'zip' => $request->address ? $request->address['zip'] : null,
+            'city' => $request->address ? $request->address['city'] : null,
+            'state' => $request->address ? $request->address['state'] : null,
+            'country' => $request->address ? $request->address['country'] : null
         ];
         $addressId = Address::insertGetId($addressAddress);
         return $addressId;
       
     }
 
-    public function createNewJob($order, $shipperId, $carrier)
+    public function createNewJob($order, $userId,$users)
     {
-        $job = new Job();
-        $job->order_id = $order;
-        $job->shipper_id = $shipperId;
-        $job->carrier_id = $carrier['id'];
-        $job->save();
-        return $job;
+         $admin = User::find(1);
+
+        foreach ($users as $key => $user) {
+            $user_job = new UserJob();
+            $user_job->order_id = $order;
+            $user_job->user_id = $user->id;
+            $user_job->customer_id = $userId;
+            $user_job->save();
+            // $user  = Carrier::with('user')->find($request->carrier['id'])->user;
+
+            //  $user->notify(new JobCreated($job));
+
+            // $admin->notify(new JobCreated($job));
+            SendJobMessage::dispatch($user,$user_job);
+        }
+        return true;
     }
 
 

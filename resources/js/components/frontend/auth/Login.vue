@@ -67,20 +67,19 @@ export default {
         this.dataLoading = true;
         this.signIn(this.form)
           .then((res) => {
-            console.log("xxxxxxxxxxxx", res);
             switch (this.user.role[0].name) {
               case "carrier":
                 axios.get("carrier/details").then((res) => {
                   res.data.first_name !== undefined
                     ? this.$router.push(this.$route.query.redirect || "/")
-                    : this.$router.push("/carrier/profile/add");
+                    : this.$router.push("/carrier/profile/details");
                 });
                 break;
               case "shipper":
                 axios.get("shipper/details").then((res) => {
                   res.data.first_name !== undefined
                     ? this.$router.push(this.$route.query.redirect || "/")
-                    : this.$router.push("/shipper/profile/add");
+                    : this.$router.push("/shipper/profile/details");
                 });
                 break;
               case "admin":

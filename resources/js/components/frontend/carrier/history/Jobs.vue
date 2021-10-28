@@ -17,11 +17,10 @@
                 </thead>
                 <tbody>
                     <tr v-for="job in jobs" :key="job.id">
-                        <td>{{job.order_detail.full_address[0].city}}</td>
-                        <td>{{job.order_detail.full_address[1].city}}</td>
+                        <td>{{job.addresses.city}}</td>
+                        <td>{{job.addresses.city}}</td>
                         <td>{{job.created_at}}</td>
-                        <td v-bind:class="{delivered: job.jobstatus.id == 5}">{{job.jobstatus.title}}</td>
-
+                        <td>kdjfkd</td>
                         <td>
                             <md-button :to="{path: 'details/'+job.id}" class="md-primay md-icon-button">
                                 <md-icon>more_horiz</md-icon>
@@ -50,7 +49,7 @@ export default {
                 .get("carrier/jobs")
                 .then((res) => {
                     this.jobs = res.data;
-                    console.log("job list ", this.jobs);
+                    console.log("job list ", this.jobs.service);
                 })
                 .catch((err) => {
                     console.log("error", err);

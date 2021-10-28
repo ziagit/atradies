@@ -12,4 +12,12 @@ class Service extends Model
     public function steps(){
         return $this->hasMany(Step::class);
     }
+
+     /** 
+    * The user that belong to the services.
+    */
+   public function user()
+   {
+       return $this->belongsToMany(User::class)->withPivot('id','created_at','updated_at');
+   }
 }

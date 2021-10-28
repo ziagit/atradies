@@ -17,17 +17,17 @@
               <label>Email</label>
               <md-input v-model="form.email" required></md-input>
             </md-field>
-            <md-field>
+            <md-field >
               <label>Password</label>
-              <md-input v-model="form.password" required></md-input>
+              <md-input v-model="form.password" type="password" required></md-input>
             </md-field>
-            <md-field>
+            <md-field >
               <label>Confirm password</label>
-              <md-input v-model="form.password_confirmation" required></md-input>
+              <md-input  v-model="form.password_confirmation" type="password" required></md-input>
             </md-field>
             <div>
-              <md-radio v-model="form.type" value="carrier">Carrier</md-radio>
-              <md-radio v-model="form.type" value="shipper">Shipper</md-radio>
+              <md-radio v-model="form.type" value="carrier">Customer</md-radio>
+              <md-radio v-model="form.type" value="shipper"> Employee</md-radio>
             </div>
             <md-button type="submit" class="md-primary">Register</md-button>
           </form>

@@ -8,8 +8,18 @@
             <md-input v-model="form.title" title="Title"></md-input>
           </md-field>
           <md-field>
-            <label>route</label>
-            <md-input v-model="form.route" title="Route name"></md-input>
+            <md-select v-model="form.route" placeholder="Route name">
+              <md-option value="location">Location</md-option>
+              <md-option value="locationtype">Location Type</md-option>
+              <md-option value="servicetype">Service Type</md-option>
+              <md-option value="budget">Budget</md-option>
+              <md-option value="time">Time</md-option>
+              <md-option value="status">Status</md-option>
+              <md-option value="need">Need</md-option>
+              <md-option value="description">Description</md-option>
+              <md-option value="contact">Contact</md-option>
+
+            </md-select>
           </md-field>
           <md-field>
             <md-select v-model="form.service" id="service" placeholder="service">

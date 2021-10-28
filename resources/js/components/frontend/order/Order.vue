@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="containerr">
     <Header v-on:togal-menu="$emit('togal-menu')" />
     <div class="content">
       <div class="row progress-bar">
@@ -16,8 +16,8 @@
       </div>
       <div class="break"></div>
       <div class="break"></div>
-      <div class="row inputs">
-        <router-view v-on:progress="progress"></router-view>
+      <div class="">
+        <router-view v-on:progress="progress" @myevent="setProgressValue(a,b,c)"></router-view>
       </div>
     </div>
     <Footer />
@@ -40,6 +40,11 @@ export default {
       this.completedSteps = prgValue;
       this.percentage = Math.floor((prgValue * 100) / this.totalSteps);
     },
+    setProgressValue(completedSteps,totalSteps,percentage){
+      this.completedSteps = completedSteps;
+      this.totalSteps = totalSteps;
+      this.percentage = percentage;
+    }
   },
 
   created() {},
@@ -52,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerr {
   .content {
     max-width: 600px;
     min-height: calc(100vh - 15px);
@@ -65,6 +70,8 @@ export default {
     }
   }
 }
+
+
 
 @media only screen and (max-width: 600px) {
 }

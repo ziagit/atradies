@@ -47,12 +47,14 @@
       <md-table-row>
         <md-table-head md-numeric>ID</md-table-head>
         <md-table-head>Title</md-table-head>
+        <md-table-head>Service</md-table-head>
         <md-table-head>Step</md-table-head>
         <md-table-head>Actions</md-table-head>
       </md-table-row>
       <md-table-row v-for="op in ops.data" :key="op.id">
         <md-table-cell md-numeric>{{ op.id }}</md-table-cell>
         <md-table-cell>{{ op.title }}</md-table-cell>
+        <md-table-cell>{{op.service.name}}</md-table-cell>
         <md-table-cell>{{ op.step.title }}</md-table-cell>
 
         <md-table-cell md-label="Actions">

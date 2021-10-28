@@ -15,6 +15,11 @@
             </md-select>
           </md-field>
           <md-field>
+            <md-textarea v-model="form.description" id="description" placeholder="Description">
+             
+            </md-textarea>
+          </md-field>
+          <md-field>
             <md-tooltip>Select Icon</md-tooltip>
             <md-file
               v-model="form.logo"
@@ -46,6 +51,7 @@ export default {
       form: {
         name: null,
         type: null,
+        description:null,
       },
       types: null,
       icon: null,
@@ -65,6 +71,7 @@ export default {
       fd.append("icon", this.icon);
       fd.append("name", this.form.name);
       fd.append("type", this.form.type);
+      fd.append('description',this.form.description);
       fd.append("_method", "put");
       axios
         .post("services/" + this.service.id, fd)
@@ -95,6 +102,7 @@ export default {
     this.get();
     this.form.name = this.service.name;
     this.form.type = this.service.type.id;
+    this.form.description  = this.service.description;
   },
   components: {
     Spinner,

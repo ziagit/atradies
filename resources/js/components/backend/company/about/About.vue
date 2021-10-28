@@ -47,7 +47,7 @@
       <md-table-row v-for="about in abouts" :key="about.id">
         <md-table-cell md-numeric>{{ about.id }}</md-table-cell>
         <md-table-cell>{{ about.title }}</md-table-cell>
-        <md-table-cell>{{ about.body }}</md-table-cell>
+        <md-table-cell v-html="about.body"></md-table-cell>
 
         <md-table-cell md-label="Actions">
           <md-button class="md-icon-button md-primary" @click="edit(about)">

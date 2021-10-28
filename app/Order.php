@@ -8,14 +8,14 @@ class Order extends Model
 { 
     public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class,'user_id','id');
     }
     public function addresses(){
-        return $this->belongsTo(Address::class);
+        return $this->belongsTo(Address::class,'address_id','id');
     }
   
     public function contacts(){
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Contact::class,'contact_id','id');
     }
     public function options(){
         return $this->belongsToMany(Option::class);
@@ -26,6 +26,10 @@ class Order extends Model
     public function job()
     {
         return $this->hasOne(Job::class);
+    }
+
+    public function service(){
+        return $this->belongsTo(Service::class);
     }
     public function jobWithStatus(){
         return $this->job()->with('jobstatus');

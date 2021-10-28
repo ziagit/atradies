@@ -8,9 +8,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://js.stripe.com/v3/"></script>
+    <script src="js/v3.js"></script>
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+
     <script  src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAQTHaD2g0BjmczBlX73Vv-KthtHzdRYPk"></script>
     <style>                                                                    
         html,

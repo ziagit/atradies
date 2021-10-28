@@ -1,6 +1,6 @@
 <template>
-  <div class="origin">
-    <span class="md-display-1">Where is the job?</span>
+  <div class="col-md-12">
+    <span class="md-display-1">{{myLocation.title}}</span>
     <div class="break"></div>
     <form @submit.prevent="nextStep()">
       <div class="search-container">
@@ -10,38 +10,10 @@
           :initialData="initialData"
         />
       </div>
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="options">
-        <md-radio
-          v-for="size in sizes"
-          :key="size.id"
-          v-model="address.accessories[0]"
-          :value="size.code"
-          >{{ size.name }}</md-radio
-        >
-      </div>
-      <div v-if="supportedArea">
-        <div class="break"></div>
-        <div class="break"></div>
-        <md-card>
-          <md-card-content>
-            <span style="color: red"
-              >Sorry! <b>"{{ supportedArea }}" </b> is not in our coverage area yet.</span
-            >
-          </md-card-content>
-        </md-card>
-      </div>
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="action">
-        <md-button class="md-icon-button md-raised md-primary" type="submit">
-          <md-icon>arrow_right</md-icon>
-        </md-button>
-      </div>
+      
     </form>
 
-    <Snackbar :data="snackbar" />
+    <!-- <Snackbar :data="snackbar" /> -->
   </div>
 </template>
 
@@ -51,10 +23,12 @@ import GoogleAddress from "../../shared/GoogleAddress";
 import localData from "../services/localData";
 export default {
   name: "Origin",
+  props:['location'],
   data: () => ({
     supportedArea: null,
     initialData: null,
     sizes: null,
+    myLocation:null,
     address: {
       country: null,
       state: null,
@@ -74,17 +48,18 @@ export default {
   methods: {
     async nextStep() {
       if (
-        this.address.country === "" ||
-        this.address.state === "" ||
-        this.address.city === "" ||
-        this.address.zip === ""
+        this.address.country == null ||
+        this.address.state == null ||
+        this.address.city == null ||
+        this.address.zip == null
       ) {
         this.snackbar.show = true;
         this.snackbar.message = "Please provide a valid address!";
         this.snackbar.statusCode = 404;
+        return false;
       } else {
         await localData.save("address", this.address);
-        this.$router.push("time");
+        return true;
       }
     },
     googleValidAddress(address) {
@@ -106,6 +81,7 @@ export default {
       this.address.street_number = null;
     },
     async init() {
+      this.myLocation = this.location;
       let data = await localData.read("address");
       if (data != null) {
         this.address.country = data.country;
@@ -119,22 +95,14 @@ export default {
         this.address.appointmentTime = data.appointmentTime;
       }
     },
-    getAccessories() {
-      axios
-        .get("location-type")
-        .then((res) => {
-          this.sizes = res.data;
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        });
-    },
+   
   },
   created() {
     this.$emit("progress", 0);
     this.init();
     this.getAccessories();
     localData.save("cRoute", this.$router.currentRoute.path);
+    this.address = localData.read("address");
   },
   components: {
     Snackbar,

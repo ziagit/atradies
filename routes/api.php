@@ -13,12 +13,17 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::resource("services", "admin\Jobs\ServiceController");
-Route::resource("types", "admin\Jobs\TypeController");
-Route::resource("steps", "admin\Jobs\StepController");
-Route::get("steps-services", "admin\Jobs\StepController@services");
-Route::resource("options", "admin\Jobs\OptionController");
-Route::get("options-steps", "admin\Jobs\OptionController@steps");
+Route::resource("services", "Admin\Jobs\ServiceController");
+Route::get('get-services','Admin\Jobs\ServiceController@getService');
+Route::resource("types", "Admin\Jobs\TypeController");
+Route::resource("steps", "Admin\Jobs\StepController");
+Route::get("search-step", "Admin\Jobs\StepController@search");
+
+Route::get("steps-services", "Admin\Jobs\StepController@services");
+Route::resource("options", "Admin\Jobs\OptionController");
+Route::get("search-option", "Admin\Jobs\OptionController@search");
+
+Route::get("options-steps/{service_id}", "Admin\Jobs\OptionController@steps");
 
 Route::post('forgot-password', 'Auth\ResetPasswordController@forgot');
 Route::post('reset-password', 'Auth\ResetPasswordController@reset');
@@ -30,6 +35,8 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   Route::post('signin', 'SignInController')->name('signin');
   Route::post('signup', 'SignUpController');
 });
+Route::get('about-us', 'AboutController@aboutUs');
+
 Route::group(['middleware' => 'auth:api'], function () {
   Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function () {
     Route::get('me', 'MeController');
@@ -55,17 +62,17 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('details', 'ShipperDetailsController');
     Route::resource('account', 'ShipperAccountController');
     Route::resource('orders', 'ShipperOrderController');
-
     Route::get('order-status', 'ShipperOrderController@status');
     Route::get("card-details", 'CardController@getCustomer');
     Route::get('shipper-address', "ShipperAccountController@shipperAddress");
   });
+
   Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'role'], function () {
-    Route::resource('about', 'company\AdminAboutController');
-    Route::resource('terms', 'company\AdminTermsController');
-    Route::resource('privacy', 'company\AdminPrivacyController');
-    Route::resource('carrier-faq', 'company\AdminCarrierFAQController');
-    Route::resource('shipper-faq', 'company\AdminShipperFAQController');
+    Route::resource('about', 'Company\AdminAboutController');
+    Route::resource('terms', 'Company\AdminTermsController');
+    Route::resource('privacy', 'Company\AdminPrivacyController');
+    Route::resource('carrier-faq', 'Company\AdminCarrierFAQController');
+    Route::resource('shipper-faq', 'Company\AdminShipperFAQController');
     Route::resource('countries', 'AdminCountryController');
     Route::get('search-country', 'AdminCountryController@search');
     Route::resource('states', 'AdminStateController');
@@ -91,7 +98,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('search-order', 'AdminOrderController@search');
     Route::resource('contact', 'Company\AdminContactController');
     Route::resource('services', 'Company\AdminServiceController');
-    Route::get('search-service', 'AdminServiceController@search');
+    Route::get('search-service', 'Company\AdminServiceController@search');
 
     Route::resource('carrier/accessories', 'AdminCarrierAccessoryController');
     Route::delete('carrier/accessories/{cId}/{aId}', 'AdminCarrierAccessoryController@destroy');
@@ -116,8 +123,14 @@ Route::group(['namespace' => 'Order'], function () {
   Route::post('charge', 'CheckoutController@store');
   Route::get('payment-status/{orderId}', 'CheckoutController@checkPayment');
   Route::get("check-payment/{id}", 'CheckoutController@checkPayment');
+  
+  Route::get('get-not-selected-services', 'OrderController@getNotSelectedService');
+  Route::post('set-selected-services', 'OrderController@setSelectedService');
+  Route::delete("shipper/service/delete/{id}","OrderController@destroyService");
+
 
   Route::get('get-services', 'OrderController@services');
+  Route::post('filter-services','OrderController@filterService');
   Route::get('get-options/{id}', 'OrderController@options');
   Route::get('delivery-services', 'OrderController@deliveryServices');
   Route::get('pick-date', 'OrderController@pickDate');
@@ -129,6 +142,7 @@ Route::group(['namespace' => 'Order'], function () {
   Route::post('confirm', 'ShipmentController@store')->name('confirm');
   Route::get('shipment-details/{id}', 'ShipmentController@show');
   Route::get('carrier-contacts/{id}', 'ShipmentController@carrierContacts');
+  Route::get('step-option/{step_id}','OrderController@stepOption');
 });
 Route::group(['namespace' => 'Location'], function () {
   Route::resource('countries', 'CountryController');

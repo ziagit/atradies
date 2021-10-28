@@ -1,16 +1,33 @@
 <template>
-  <div class="container">
+  <div class="containerr">
     <div class="row">
+          <!--Grid column-->
+          <div class="col-md-2"></div>
+          <div class="col-md-8 mb-4">
+
+            <div class="input-group md-form form-sm form-1 pl-0">
+              
+              <input class="form-control my-0 py-1" type="text" @keyup="checkKey" placeholder="Search by service name or description..." aria-label="Search" v-model="form.service" style="border: 1px solid #ced4da !important;" >
+              <div class="input-group-prepend">
+                <span @click="filterService" class="input-group-text btn btn-link purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
+                  aria-hidden="true"></i>Go</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-2"></div>
+
       <div class="col" v-for="service in services" :key="service.id">
-        <div @click="start(service)">
+        <div @click="next(service)">
           <md-card>
             <div class="image">
-              <img :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
+              <img v-if="service.icon != ''" :src="'images/uploads/' + service.icon" alt="" width="60" />
+              <img v-else :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
             </div>
             <div class="break"></div>
             <div class="text">
               <div class="md-display-1">{{ service.name }}</div>
-              <div class="md-body-1">Some details about this service</div>
+              <div class="md-body-1">{{service.description}}</div>
             </div>
           </md-card>
         </div>
@@ -23,16 +40,21 @@
 import VueRouter from "vue-router";
 import localData from "../services/localData";
 import JobLocation from "./JobLocation";
+import router from "../../../routes";
+import axios from 'axios';
 export default {
   name: "Origin",
   data: () => ({
     services: null,
+    form:{
+      service:null,
+    }
   }),
 
   methods: {
-    start(service) {
-      localData.save("service", service);
-      this.$router.push("/order/location");
+    async next(service) {
+      localData.save("service",service);
+      this.$router.push("/order/steps");
     },
 
     get() {
@@ -45,6 +67,24 @@ export default {
           console.log("Error: ", err);
         });
     },
+    
+    filterService(){
+      axios
+      .post('filter-services',this.form)
+      .then((res) => {
+        // console.log(res);
+        this.services = res.data;
+      })
+      .catch((err) => {
+        console.log("Error : ",err);
+      });
+    },
+
+    checkKey(event){
+      if(event.keyCode == 13){
+        this.filterService();
+      }
+    }
   },
   created() {
     let routeData = new VueRouter({
@@ -61,7 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerr {
   text-align: center;
   .row {
     display: flex;
@@ -70,7 +110,6 @@ export default {
     .col {
       flex: 50%;
       .md-card {
-        background: #383b3e;
         margin: 10px;
         font-size: 18px;
         line-height: 37px;
@@ -87,10 +126,10 @@ export default {
           padding: 16px;
           text-align: left;
           .md-display-1 {
-            color: #fff;
+            color: #000;
           }
           .md-body-1 {
-            color: rgb(230, 224, 224);
+            //color: rgb(230, 224, 224);
           }
         }
         .md-icon {

@@ -1,104 +1,82 @@
 <template>
-  <div class="need">
-    <span class="md-display-1">What needs the work?</span>
-    <div class="break"></div>
-    <form @submit.prevent="nextStep()">
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="options" v-for="need in needs" :key="need.id">
-        <md-radio
-          class="md-primary"
-          v-if="need.needs"
-          v-model="selected"
-          :value="need.needs"
-          >{{ need.needs }}</md-radio
-        >
-      </div>
+  <div class="origin">
+    <span class="md-display-1">{{myNeed.title}}</span>
+    <div class="break">
+        <form @submit.prevent="nextStep()">
 
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="action">
-        <md-button to="/order/service" class="md-icon-button md-raised">
-          <md-icon>arrow_left</md-icon>
-        </md-button>
-        <div class="tab"></div>
-        <md-button class="md-icon-button md-raised md-primary" type="submit">
-          <md-icon>arrow_right</md-icon>
-        </md-button>
-      </div>
-    </form>
-    <Snackbar :data="snackbar" />
+                <b-form-group  v-slot="{ ariaDescribedby }">
+                    <b-form-radio-group
+                        id="radio-group-2"
+                        v-model="form.need"
+                        name="form.need"
+                    >
+                        <b-form-radio  class="form-control" :aria-describedby="ariaDescribedby"  v-for="option in options" v-bind:key="option.id" :value="option.title">
+                            {{option.title}}
+                        </b-form-radio>
+                    </b-form-radio-group>
+                    
+                </b-form-group>
+            </form>
+    </div>
+   
   </div>
 </template>
 
 <script>
-import Snackbar from "../../shared/Snackbar";
-import localData from "../services/localData";
+import axios from 'axios';
+import localData from '../services/localData';
 export default {
-  name: "Origin",
-  data: () => ({
-    selected: null,
-    needs: null,
-
-    snackbar: {
-      show: false,
-      message: null,
-      statusCode: null,
+    name:"Need",
+    props:['need'],
+    data: () => ({
+        myNeed:null,
+        options:[],
+        date:null,
+        form:{
+            need:null,
+            title:null,
+        }
+    }),
+    methods:{
+        async init() {
+            this.myNeed = this.need;
+            if(localData.read("need").need != null){
+                this.form.need = localData.read("need").need;
+            }
+            this.form.title = this.need.title;
+        },
+        get(step_id){
+            axios
+            .get('/step-option/'+step_id)
+            .then((response) => {
+                this.options = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        },
+        async nextStep() {
+        if (
+            this.form.need === ""
+            ) {
+                this.snackbar.show = true;
+                this.snackbar.message = "Please Select any one !";
+                this.snackbar.statusCode = 404;
+            } else {
+                await localData.save("need", this.form);
+                
+            }
+        },
     },
-  }),
-
-  methods: {
-    async nextStep() {
-      await localData.save("need", this.selected);
-      this.$router.push("/order/budget");
-    },
-
-    async init() {
-      this.selected = await localData.read("budget");
-    },
-    getneeds() {
-      axios
-        .get("needs")
-        .then((res) => {
-          this.needs = res.data;
-          this.selected = res.data[0].needs;
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        });
-    },
-  },
-  created() {
-    this.$emit("progress", 4);
-    this.init();
-    this.getneeds();
-    localData.save("cRoute", this.$router.currentRoute.path);
-  },
-  components: {
-    Snackbar,
-  },
-};
+    created(){
+        this.init();
+        this.get(this.need.id);
+        
+    }
+    
+}
 </script>
 
-<style lang="scss" scoped>
-.need {
-  text-align: center;
-  form {
-    text-align: left;
-    width: 300px;
-    margin: auto;
-    .options {
-      .md-radio {
-        margin: 8px 16px 8px 0;
-      }
-    }
-    .action {
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
+<style>
 
-@media only screen and (max-width: 600px) {
-}
 </style>

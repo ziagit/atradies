@@ -33,9 +33,9 @@ export default {
   methods: {
     completRegisteration() {
       if (this.user.role[0].name == "shipper") {
-        this.$router.push("/shipper/profile/add");
+        this.$router.push("/shipper/profile/details");
       } else if (this.user.role[0].name == "carrier") {
-        this.$router.push("/carrier/profile/add");
+        this.$router.push("/carrier/profile/details");
       }
     },
   },

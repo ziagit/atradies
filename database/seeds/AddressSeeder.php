@@ -20,7 +20,7 @@ class AddressSeeder extends Seeder
                 'zip' => 'A0A4G0',
                 'city' => 'Vancouver',
                 'state' => 'BC',
-                'country' => 'AU',
+                'country' => '1',
             ],
             [
                 'street' => "PO BOX",
@@ -28,7 +28,7 @@ class AddressSeeder extends Seeder
                 'zip' => 'B0P1N0',
                 'city' => 'Victoria',
                 'state' => 'BC',
-                'country' => 'AU',
+                'country' => '2',
             ]
   
         ];

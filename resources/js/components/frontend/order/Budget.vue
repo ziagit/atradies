@@ -1,68 +1,84 @@
 <template>
-  <div class="order">
-    <span class="md-display-1">{{ title }}</span>
-    <div class="break"></div>
-    <form @submit.prevent="next()">
-      <div class="options">
-        <md-radio
-          v-for="option in options"
-          :key="option.id"
-          v-model="selected"
-          :value="option"
-          >{{ option.title }}?</md-radio
-        >
-      </div>
-      <div class="break"></div>
-      <div class="break"></div>
-      <div class="action">
-        <md-button class="md-raised md-icon-button" @click="$router.back()">
-          <md-icon>arrow_left</md-icon>
-        </md-button>
-        <md-button class="md-primary md-raised md-icon-button" type="submit">
-          <md-icon>arrow_right</md-icon>
-        </md-button>
-      </div>
-    </form>
+  <div class="origin">
+    <span class="md-display-1">{{myBudget.title}}</span>
+    <div class="break">
+        <form @submit.prevent="nextStep()">
+
+                <b-form-group  v-slot="{ ariaDescribedby }">
+                    <b-form-radio-group
+                        id="radio-group-2"
+                        v-model="form.budget"
+                        name="form.budget"
+                    >
+                        <b-form-radio  class="form-control" :aria-describedby="ariaDescribedby"  v-for="option in options" v-bind:key="option.id" :value="option.title">
+                            {{option.title}}
+                        </b-form-radio>
+                    </b-form-radio-group>
+                    
+                </b-form-group>
+            </form>
+    </div>
+   
   </div>
 </template>
 
 <script>
-import localData from "../services/localData";
+import axios from 'axios';
+import localData from '../services/localData';
 export default {
-  name: "PickupDate",
-  data: () => ({
-    title: null,
-    budget: null,
-    selected: null,
-    options: null,
-  }),
-  methods: {
-    next() {
-      localData.save("budget", this.selected);
-      this.$router.push("/order/contact");
+    name:"Budget",
+    props:['budget'],
+    data: () => ({
+        myBudger:null,
+        options:[],
+        date:null,
+        form:{
+            budget:null,
+            title:null,
+        }
+    }),
+    methods:{
+        async init() {
+            this.myBudget = this.budget;
+            if(localData.read("budget").budget != null){
+              this.form.budget = localData.read("budget").budget;
+            }
+            this.form.title = this.budget.title;
+        },
+        get(step_id){
+            axios
+            .get('/step-option/'+step_id)
+            .then((response) => {
+                this.options = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        },
+        async nextStep() {
+        if (
+            this.form.budget === ""
+            ) {
+                this.snackbar.show = true;
+                this.snackbar.message = "Please Select any one !";
+                this.snackbar.statusCode = 404;
+            } else {
+                await localData.save("budget", this.form);
+                
+            }
+        },
     },
-    get() {
-      axios
-        .get("get-options/" + 3)
-        .then((res) => {
-          console.log("xxx", res.data);
-          this.options = res.data;
-          this.selected = this.options[0];
-        })
-        .catch((err) => {
-          console.log("Error: ", err);
-        });
-    },
-    async init() {
-      this.title = await localData.read("service").steps[2].title;
-      this.budget = await localData.read("budget");
-    },
-  },
-  created() {
-    this.init();
-    this.$emit("progress", 2);
-    this.get();
-    localData.save("cRoute", this.$router.currentRoute.path);
-  },
-};
+    created(){
+        this.init();
+        this.get(this.budget.id);
+        
+    }
+    
+}
 </script>
+
+<style>
+.form-control{
+  border: none !important;
+}
+</style>

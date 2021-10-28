@@ -48,12 +48,14 @@
         <md-table-head md-numeric>ID</md-table-head>
         <md-table-head>Name</md-table-head>
         <md-table-head>Type</md-table-head>
-        <md-table-head>Actions</md-table-head>
+        <md-table-head>Description</md-table-head>
+        <md-table-head> Actions</md-table-head>
       </md-table-row>
       <md-table-row v-for="service in services.data" :key="service.id">
         <md-table-cell md-numeric>{{ service.id }}</md-table-cell>
         <md-table-cell>{{ service.name }}</md-table-cell>
         <md-table-cell>{{ service.type.title }}</md-table-cell>
+        <md-table-cell>{{ service.description}}</md-table-cell>
 
         <md-table-cell md-label="Actions">
           <md-button class="md-icon-button md-primary" @click="edit(service)">
@@ -96,7 +98,7 @@ export default {
   methods: {
     search() {
       axios
-        .get("search-service", {
+        .get("admin/search-service", {
           params: {
             keywords: this.keywords,
           },

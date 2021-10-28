@@ -14,18 +14,18 @@
         >
       </md-list-item>
 
-      <md-list-item to="/shippers" @click="hideMenu()">
-        <!--<md-icon v-bind:class="{active: $route.name == 'shippers'}">local_mall</md-icon>-->
+      <md-list-item to="/jobs" @click="hideMenu()">
+        <!--<md-icon v-bind:class="{active: $route.name == 'jobs'}">local_mall</md-icon>-->
         <span
           class="md-list-item-text"
-          v-bind:class="{ active: $route.name == 'our-shippers' }"
-          >Shippers</span
+          v-bind:class="{ active: $route.name == 'our-jobs' }"
+          >Jobs For You</span
         >
       </md-list-item>
 
-      <!--     <md-list-item md-expand :md-expanded.sync="expandShippers">
+      <!--     <md-list-item md-expand :md-expanded.sync="expandJobs">
             <md-icon>local_mall</md-icon>
-            <span class="md-list-item-text">Shippers</span>
+            <span class="md-list-item-text">Jobs</span>
             <md-list slot="md-expand">
                 <md-list-item class="md-inset" to="/admin/carriers" @click="hideMenu()">Get Free Quotes</md-list-item>
                 <md-list-item class="md-inset" to="/admin/rates" @click="hideMenu()">Shipper FAQ</md-list-item>
@@ -33,14 +33,7 @@
             </md-list>
         </md-list-item>-->
 
-      <md-list-item to="/carriers" @click="hideMenu()">
-        <!--<md-icon v-bind:class="{active: $route.name == 'carriers'}">local_shipping</md-icon>-->
-        <span
-          class="md-list-item-text"
-          v-bind:class="{ active: $route.name == 'our-carriers' }"
-          >Carriers</span
-        >
-      </md-list-item>
+      
       <md-list-item to="/help" @click="hideMenu()">
         <!--<md-icon v-bind:class="{active: $route.name == 'help'}">help</md-icon>-->
         <span class="md-list-item-text" v-bind:class="{ active: $route.name == 'help' }"
