@@ -49,6 +49,7 @@ export default {
 <style lang="scss" scoped>
 .containerr {
   .content {
+    background:url('/images/divbackround.jpg');
     text-align: center;
     height: calc(60vh);
     text-align: center;
