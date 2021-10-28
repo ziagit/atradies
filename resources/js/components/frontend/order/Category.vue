@@ -5,35 +5,35 @@
           <div class="col-md-2"></div>
           <div class="col-md-8 mb-4">
 
-            <div class="input-group md-form form-sm form-1 pl-0">
+            <div class="input-group md-form form-sm form-1 pl-0 ">
               
-              <input class="form-control my-0 py-1" type="text" @keyup="checkKey" placeholder="Search by service name or description..." aria-label="Search" v-model="form.service" style="border: 1px solid #ced4da !important;" >
+              <input class="form-control my-0 py-4 " type="text" @keyup="filterService" placeholder="Search by service name or description..." aria-label="Search" v-model="form.service" style="border: 1px solid #ced4da !important;" >
               <div class="input-group-prepend">
-                <span @click="filterService" class="input-group-text btn btn-link purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
-                  aria-hidden="true"></i>Go</span>
+                <span @click="filterService" style="background-color:rgb(255, 102, 0);color:white" class="input-group-text btn purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
+                  aria-hidden="true" ></i>Go</span>
               </div>
             </div>
 
           </div>
           <div class="col-md-2"></div>
 
-      <div class="col" v-for="service in services" :key="service.id">
-        <div @click="next(service)">
-          <md-card>
-            <div class="image">
-              <img v-if="service.icon != ''" :src="'images/uploads/' + service.icon" alt="" width="60" />
-              <img v-else :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
+            <div class="col col-md-8"  v-for="service in services" :key="service.id">
+              <div @click="next(service)" >
+                <md-card>
+                  <div class="image">
+                    <img v-if="service.icon != ''" :src="'images/uploads/' + service.icon" alt="" width="60" />
+                    <img v-else :src="'images/uploads/' + '1618318023.icon.svg'" alt="" width="60" />
+                  </div>
+                  <div class="break"></div>
+                  <div class="text">
+                    <div class="md-display-1">{{ service.name }}</div>
+                    <div class="md-body-1">{{service.description}}</div>
+                  </div>
+                </md-card>
+              </div>
             </div>
-            <div class="break"></div>
-            <div class="text">
-              <div class="md-display-1">{{ service.name }}</div>
-              <div class="md-body-1">{{service.description}}</div>
-            </div>
-          </md-card>
-        </div>
-      </div>
+          </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -69,15 +69,21 @@ export default {
     },
     
     filterService(){
-      axios
-      .post('filter-services',this.form)
-      .then((res) => {
-        // console.log(res);
-        this.services = res.data;
-      })
-      .catch((err) => {
-        console.log("Error : ",err);
-      });
+      if(this.form.service == "")
+      {
+        this.services = null;     
+      }
+      else{
+        axios
+        .post('filter-services',this.form)
+        .then((res) => {
+          // console.log(res);
+          this.services = res.data;
+        })
+        .catch((err) => {
+          console.log("Error : ",err);
+        });
+      }
     },
 
     checkKey(event){
@@ -91,7 +97,7 @@ export default {
       routes: [{ path: "/order/location", component: JobLocation }],
     });
 
-    this.get();
+    // this.get();
     localData.save("cr", this.$router.currentRoute.path);
   },
   components: {
@@ -108,22 +114,24 @@ export default {
     justify-content: space-around;
     flex-wrap: wrap;
     .col {
-      flex: 50%;
+      flex: 100%;
       .md-card {
-        margin: 10px;
+        margin: 4px;
         font-size: 18px;
         line-height: 37px;
         display: flex;
+        max-height: 70px;
         .image {
           align-items: center;
           display: flex;
           padding: 16px;
-          background: rgb(14, 126, 179);
+          background: rgb(255, 102, 0);
           border-top-left-radius: 5px;
           border-bottom-left-radius: 5px;
         }
         .text {
-          padding: 16px;
+          // padding: 16px;
+          padding-left: 10px;
           text-align: left;
           .md-display-1 {
             color: #000;

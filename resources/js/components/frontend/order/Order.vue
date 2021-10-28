@@ -20,6 +20,7 @@
         <router-view v-on:progress="progress" @myevent="setProgressValue(a,b,c)"></router-view>
       </div>
     </div>
+    <Webinfo/>
     <Footer />
   </div>
 </template>
@@ -27,6 +28,7 @@
 import RadialProgressBar from "vue-radial-progress";
 import Header from "../../shared/Header";
 import Footer from "../../shared/Footer";
+import Webinfo from "../../shared/Webinfo";
 export default {
   name: "StepperLinear",
   data: () => ({
@@ -52,6 +54,7 @@ export default {
     RadialProgressBar,
     Header,
     Footer,
+    Webinfo
   },
 };
 </script>
@@ -60,7 +63,6 @@ export default {
 .containerr {
   .content {
     max-width: 600px;
-    min-height: calc(100vh - 15px);
     margin: auto;
     padding: 30px;
     .progress-bar {

@@ -16,6 +16,15 @@
         <Category />
       </div>
     </div>
+    <div class="image-footer">
+      <div class="content-footer">
+        <h2>
+         <img src="https://assets.homeimprovementpages.com.au/images/tradie.37a3abda79d172232d6636084ed48339.svg"> For aTradies - list your business
+        </h2>
+        <router-link to="/register" class="btn btn-default" >Register Now</router-link>
+      </div>
+    </div>
+   <Webinfo/>
     <Footer />
   </div>
 </template>
@@ -24,6 +33,7 @@
 import Footer from "../../shared/Footer";
 import Header from "../../shared/Header";
 import Category from "../order/Category";
+import Webinfo from '../../shared/Webinfo';
 export default {
   name: "HomeContent",
   props: ["scrollValue"],
@@ -42,6 +52,7 @@ export default {
     Header,
     Footer,
     Category,
+    Webinfo
   },
 };
 </script>
@@ -51,9 +62,8 @@ export default {
   .content {
     background:url('/images/divbackround.jpg');
     text-align: center;
-    height: calc(60vh);
+    height: calc(80vh);
     text-align: center;
-    max-width: 1000px;
     margin: auto;
     padding-top: 5%;
     .md-display-1 {
@@ -65,7 +75,24 @@ export default {
         margin-right: 16px;
       }
     }
+   
   }
+   .image-footer{
+      min-width: 90vw;
+      position: relative;
+      background-color: rgb(131, 28, 75);
+      padding: 1rem 0px;
+    }
+    .content-footer{
+      text-align: center;
+      color: white;
+    }
+
+    .content-footer h2{
+      display: inline;
+    }
+
+    
 
   @media only screen and (max-width: 600px) {
     .content {

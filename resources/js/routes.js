@@ -169,7 +169,7 @@ export default new VueRouter({
                     path: 'order',
                     component: Order,
                     children: [
-                        { path: '', redirect: 'step' },
+                        { path: '', redirect: 'budget' },
                         { name: 'steps', path: 'steps', component: Steps, /* beforeEnter: orderGuard */ },
                         //{ name: 'date', path: 'date', component: JobDate },
                         { name: 'budget', path: 'budget', component: JobBudget },
