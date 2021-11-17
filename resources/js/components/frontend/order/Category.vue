@@ -1,5 +1,5 @@
 <template>
-  <div class="containerr">
+  <div class="container">
     <div class="row">
           <!--Grid column-->
           <div class="col-md-2"></div>
@@ -10,7 +10,7 @@
               <input class="form-control my-0 py-4 " type="text" @keyup="filterService" placeholder="Search by service name or description..." aria-label="Search" v-model="form.service" style="border: 1px solid #ced4da !important;" >
               <div class="input-group-prepend">
                 <span @click="filterService" style="background-color:rgb(255, 102, 0);color:white" class="input-group-text btn purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
-                  aria-hidden="true" ></i>Go</span>
+                  aria-hidden="true" ></i>Gov</span>
               </div>
             </div>
 

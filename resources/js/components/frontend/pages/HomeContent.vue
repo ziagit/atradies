@@ -6,9 +6,6 @@
         What service <span style="color: rgb(14, 126, 179)">do you need?</span>
       </div>
       <div class="break"></div>
-      <!--  <div class="md-title">
-        What service <span style="color: rgb(14, 126, 179)">do you need?</span>
-      </div> -->
       <div class="break"></div>
       <div class="break"></div>
       <div class="actions">

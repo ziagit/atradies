@@ -9,7 +9,6 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
-        "beyondcode/laravel-websockets": "^1.4",
         "cartalyst/stripe-laravel": "^12.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
@@ -18,7 +17,6 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "maatwebsite/excel": "^3.1",
-        "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-query-builder": "^3.2",
         "stripe/stripe-php": "^7.46",
         "tymon/jwt-auth": "^1.0"
