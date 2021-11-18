@@ -8,6 +8,10 @@
       <div class="break"></div>
       <div class="break"></div>
       <div class="break"></div>
+        SHow here:
+        <ul>
+          <li v-for="(user,index) in users" :key="index">{{user.name}}</li>
+        </ul>
       <div class="actions">
         
         <Category />
@@ -31,12 +35,23 @@ import Footer from "../../shared/Footer";
 import Header from "../../shared/Header";
 import Category from "../order/Category";
 import Webinfo from '../../shared/Webinfo';
+import axios from 'axios';
 export default {
   name: "HomeContent",
   props: ["scrollValue"],
-  data: () => ({}),
-
+  data: () => ({
+    users:null,
+  }),
+  created(){
+    this.getUsers();
+  },
   methods: {
+    getUsers(){
+      axios.get('test').then(res=>{
+        this.users = res.data;
+        console.log("users: ",res.data);
+      }).catch(err=>console.log(err))
+    },
     menuTogal() {
       this.$emit("menu-togal");
     },

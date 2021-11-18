@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('test','TestController@index');
 Route::resource("services", "Admin\Jobs\ServiceController");
 Route::get('get-services','Admin\Jobs\ServiceController@getService');
 Route::resource("types", "Admin\Jobs\TypeController");
@@ -152,9 +153,7 @@ Route::group(['namespace' => 'Location'], function () {
 });
 Route::resource('rating', 'Carrier\RatingController');
 Route::resource('review', 'Carrier\ReviewController');
-Route::get("stripe-key", function(){
-  return env("STRIPE_KEY");
-});
+
 
 
 

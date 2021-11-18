@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Carrier;
 use App\Test;
+use App\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TestController extends Controller
 {
     public function index(){
-        $tests = Test::all();
+        $tests = User::all();
         return response()->json($tests);
     }
     public function store(Request $request){
